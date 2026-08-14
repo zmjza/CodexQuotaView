@@ -1,6 +1,6 @@
 import Foundation
 import XCTest
-@testable import QuotaViewCore
+@testable import CodexQuotaViewCore
 
 final class CodexActivityModelsTests: XCTestCase {
     func testHookEventsMapToConfirmedVisualStates() {
@@ -95,9 +95,9 @@ final class CodexActivityModelsTests: XCTestCase {
     func testWorkspacePathIsReducedToLastComponent() {
         XCTAssertEqual(
             CodexActivityPrivacy.workspaceName(
-                from: "/Users/example/Documents/QuotaView"
+                from: "/Users/example/Documents/CodexQuotaView"
             ),
-            "QuotaView"
+            "CodexQuotaView"
         )
         XCTAssertNil(CodexActivityPrivacy.workspaceName(from: nil))
     }
@@ -107,11 +107,11 @@ final class CodexActivityModelsTests: XCTestCase {
             id: "thread",
             sessionId: "session",
             cwd: "/Users/example/Documents/widget",
-            name: "QuotaView 0.3.1"
+            name: "CodexQuotaView 0.3.1"
         )
         XCTAssertEqual(
             metadata.privacySafeDisplayName,
-            "QuotaView 0.3.1"
+            "CodexQuotaView 0.3.1"
         )
         XCTAssertTrue(
             metadata.matches(

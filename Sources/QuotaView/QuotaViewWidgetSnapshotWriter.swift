@@ -1,24 +1,24 @@
-#if canImport(QuotaViewWidgetContract)
-import QuotaViewWidgetContract
+#if canImport(CodexQuotaViewWidgetContract)
+import CodexQuotaViewWidgetContract
 #endif
 
 import Foundation
 import OSLog
-import QuotaViewCore
+import CodexQuotaViewCore
 import WidgetKit
 
-struct QuotaViewWidgetSnapshotProjector {
+struct CodexQuotaViewWidgetSnapshotProjector {
     func makeSnapshot(
         presentation: CurrentCodexPresentation?,
         isAvailable: Bool,
         localeIdentifier: String,
         now: Date
-    ) -> QuotaViewWidgetSnapshot {
+    ) -> CodexQuotaViewWidgetSnapshot {
         guard isAvailable, let presentation else {
-            return QuotaViewWidgetSnapshot(
+            return CodexQuotaViewWidgetSnapshot(
                 generatedAt: now,
                 expiresAt: now.addingTimeInterval(
-                    QuotaViewWidgetConfiguration.snapshotLifetime
+                    CodexQuotaViewWidgetConfiguration.snapshotLifetime
                 ),
                 updatedAt: nil,
                 localeIdentifier: localeIdentifier,
@@ -33,10 +33,10 @@ struct QuotaViewWidgetSnapshotProjector {
         let metricFormatter = WidgetMetricFormatter(
             localeIdentifier: localeIdentifier
         )
-        return QuotaViewWidgetSnapshot(
+        return CodexQuotaViewWidgetSnapshot(
             generatedAt: now,
             expiresAt: now.addingTimeInterval(
-                QuotaViewWidgetConfiguration.snapshotLifetime
+                CodexQuotaViewWidgetConfiguration.snapshotLifetime
             ),
             updatedAt: presentation.lastUpdatedAt,
             localeIdentifier: localeIdentifier,
@@ -153,7 +153,7 @@ private struct WidgetMetricFormatter {
 }
 
 @MainActor
-final class QuotaViewWidgetSnapshotWriter {
+final class CodexQuotaViewWidgetSnapshotWriter {
     typealias ContainerURLProvider = (String) -> URL?
     typealias TimelineReloader = (String) -> Void
 
@@ -164,14 +164,14 @@ final class QuotaViewWidgetSnapshotWriter {
     }
 
     private static let logger = Logger(
-        subsystem: "com.quotaview.menubar",
+        subsystem: "com.zmjza.codexquotaview.menubar",
         category: "widget-snapshot"
     )
 
     private let appGroupIdentifier: String
     private let containerURLProvider: ContainerURLProvider
     private let timelineReloader: TimelineReloader
-    private let projector: QuotaViewWidgetSnapshotProjector
+    private let projector: CodexQuotaViewWidgetSnapshotProjector
     private var lastReloadAt: Date?
     private var lastReloadSignature: ReloadSignature?
     private var didLogUnavailableContainer = false
@@ -186,8 +186,8 @@ final class QuotaViewWidgetSnapshotWriter {
         timelineReloader: @escaping TimelineReloader = {
             WidgetCenter.shared.reloadTimelines(ofKind: $0)
         },
-        projector: QuotaViewWidgetSnapshotProjector =
-            QuotaViewWidgetSnapshotProjector()
+        projector: CodexQuotaViewWidgetSnapshotProjector =
+            CodexQuotaViewWidgetSnapshotProjector()
     ) {
         self.appGroupIdentifier =
             appGroupIdentifier ?? Self.configuredAppGroupIdentifier
@@ -235,7 +235,7 @@ final class QuotaViewWidgetSnapshotWriter {
     }
 
     private func reloadTimelineIfNeeded(
-        for snapshot: QuotaViewWidgetSnapshot,
+        for snapshot: CodexQuotaViewWidgetSnapshot,
         now: Date
     ) {
         let signature = ReloadSignature(
@@ -244,7 +244,7 @@ final class QuotaViewWidgetSnapshotWriter {
             provider: snapshot.provider
         )
         let reloadInterval =
-            QuotaViewWidgetConfiguration.minimumTimelineReloadInterval
+            CodexQuotaViewWidgetConfiguration.minimumTimelineReloadInterval
         let intervalElapsed = lastReloadAt.map {
             now.timeIntervalSince($0) >= reloadInterval
         } ?? true
@@ -255,7 +255,7 @@ final class QuotaViewWidgetSnapshotWriter {
 
         lastReloadAt = now
         lastReloadSignature = signature
-        timelineReloader(QuotaViewWidgetConfiguration.kind)
+        timelineReloader(CodexQuotaViewWidgetConfiguration.kind)
     }
 
     private func logUnavailableContainerOnce() {
@@ -270,8 +270,8 @@ final class QuotaViewWidgetSnapshotWriter {
 
     private static var configuredAppGroupIdentifier: String {
         Bundle.main.object(
-            forInfoDictionaryKey: "QuotaViewAppGroupIdentifier"
+            forInfoDictionaryKey: "CodexQuotaViewAppGroupIdentifier"
         ) as? String
-            ?? QuotaViewWidgetConfiguration.defaultAppGroupIdentifier
+            ?? CodexQuotaViewWidgetConfiguration.defaultAppGroupIdentifier
     }
 }

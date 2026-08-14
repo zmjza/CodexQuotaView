@@ -1,5 +1,5 @@
 import Foundation
-import QuotaViewCore
+import CodexQuotaViewCore
 
 public struct ChartID: RawRepresentable, Hashable, Codable, Sendable {
     public let rawValue: String

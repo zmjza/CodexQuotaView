@@ -2,7 +2,7 @@ import AppKit
 import Combine
 import Darwin
 import Foundation
-import QuotaViewCore
+import CodexQuotaViewCore
 
 enum CodexActivityConnectionStatus: Equatable {
     case notInstalled
@@ -484,7 +484,7 @@ final class CodexActivityRuntime: ObservableObject {
                 localizedSetupMessage(
                     chinese: "找不到可以重新启动的 Codex 应用。",
                     english:
-                        "QuotaView could not find the Codex application."
+                        "CodexQuotaView could not find the Codex application."
                 )
             )
             render()
@@ -566,7 +566,7 @@ final class CodexActivityRuntime: ObservableObject {
         Task { [weak self] in
             let shouldReconcile = await Task.detached(priority: .utility) {
                 let hasExistingHandler =
-                    (try? installer.hasQuotaViewHandlers()) ?? false
+                    (try? installer.hasCodexQuotaViewHandlers()) ?? false
                 return optedIn || hasExistingHandler
             }.value
             guard let self, !Task.isCancelled else { return }
@@ -591,7 +591,7 @@ final class CodexActivityRuntime: ObservableObject {
                 Result {
                     if previouslyEnabledOnly {
                         let hasExistingHandler =
-                            try installer.hasQuotaViewHandlers()
+                            try installer.hasCodexQuotaViewHandlers()
                         guard hasExistingHandler else {
                             return CodexActivitySetupResult.notInstalled
                         }
@@ -969,11 +969,11 @@ final class CodexActivityRuntime: ObservableObject {
         )
         let renderState = CodexActivityRenderState(
             visualState: .disconnectedCodex,
-            windowTitle: "QuotaView",
+            windowTitle: "CodexQuotaView",
             statusTitle: statusTitle,
             operation: operation,
             accessibilityLabel: copy.accessibilityLabel(
-                windowTitle: "QuotaView",
+                windowTitle: "CodexQuotaView",
                 statusTitle: statusTitle,
                 operation: operation
             )
@@ -1001,14 +1001,14 @@ final class CodexActivityRuntime: ObservableObject {
             in: .userDomainMask
         ).first ?? FileManager.default.temporaryDirectory
         return base
-            .appendingPathComponent("QuotaView", isDirectory: true)
+            .appendingPathComponent("CodexQuotaView", isDirectory: true)
             .appendingPathComponent("codex-activity.sock")
     }
 
     private static func defaultQueueURL() -> URL {
         URL(
             fileURLWithPath:
-                "/tmp/com.quotaview.codex-activity-\(getuid())",
+                "/tmp/com.zmjza.codexquotaview.codex-activity-\(getuid())",
             isDirectory: true
         )
     }
@@ -1057,7 +1057,7 @@ private struct CodexActivityCopy {
 
         return switch (language, status) {
         case (.simplifiedChinese, .notInstalled):
-            "在 QuotaView 设置中连接 Codex 灵动岛"
+            "在 CodexQuotaView 设置中连接 Codex 灵动岛"
         case (.simplifiedChinese, .installedNeedsRestart):
             "完成安全确认后重新启动 Codex"
         case (.simplifiedChinese, .awaitingTrust):
@@ -1067,9 +1067,9 @@ private struct CodexActivityCopy {
         case (.simplifiedChinese, .connected):
             "Codex 灵动岛连接已激活"
         case (.simplifiedChinese, .abnormal):
-            "连接遇到问题，请返回 QuotaView 设置"
+            "连接遇到问题，请返回 CodexQuotaView 设置"
         case (.english, .notInstalled):
-            "Connect the Codex island in QuotaView Settings"
+            "Connect the Codex island in CodexQuotaView Settings"
         case (.english, .installedNeedsRestart):
             "Restart Codex after completing the security review"
         case (.english, .awaitingTrust):
@@ -1079,7 +1079,7 @@ private struct CodexActivityCopy {
         case (.english, .connected):
             "Codex activity is active"
         case (.english, .abnormal):
-            "Connection needs attention in QuotaView Settings"
+            "Connection needs attention in CodexQuotaView Settings"
         }
     }
 
@@ -1212,7 +1212,7 @@ private final class CodexActivityUnixBridge {
     private let authenticationToken: String
     private let installationIdentifier: String
     private let queue = DispatchQueue(
-        label: "com.duoasa.QuotaView.codex-activity-bridge",
+        label: "com.zmjza.codexquotaview.codex-activity-bridge",
         qos: .utility
     )
     private var source: DispatchSourceRead?
@@ -1395,7 +1395,7 @@ final class CodexActivityFileBridge {
     private let authenticationToken: String
     private let installationIdentifier: String
     private let queue = DispatchQueue(
-        label: "com.duoasa.QuotaView.codex-activity-file-bridge",
+        label: "com.zmjza.codexquotaview.codex-activity-file-bridge",
         qos: .utility
     )
     private var source: DispatchSourceFileSystemObject?
@@ -1846,13 +1846,13 @@ struct CodexSecurityReviewLauncher: Sendable {
                 for: .applicationSupportDirectory,
                 in: .userDomainMask
             ).first!
-                .appendingPathComponent("QuotaView", isDirectory: true)
+                .appendingPathComponent("CodexQuotaView", isDirectory: true)
                 .appendingPathComponent("Launchers", isDirectory: true)
         }
         self.launcherDirectoryURL = resolvedLauncherDirectoryURL
         self.reviewCompletionURL = reviewCompletionURL
             ?? resolvedLauncherDirectoryURL.appendingPathComponent(
-                "QuotaViewHookReviewComplete"
+                "CodexQuotaViewHookReviewComplete"
             )
     }
 
@@ -1879,7 +1879,7 @@ struct CodexSecurityReviewLauncher: Sendable {
             chmod(launcherDirectoryURL.path, S_IRWXU)
 
             let expectURL = launcherDirectoryURL
-                .appendingPathComponent("QuotaViewHookReview.exp")
+                .appendingPathComponent("CodexQuotaViewHookReview.exp")
             let launcherURL = launcherDirectoryURL
                 .appendingPathComponent("Open Codex Security Review.command")
             if fileManager.fileExists(
@@ -2021,7 +2021,7 @@ enum CodexActivityDiagnostics {
     static var logURL: URL {
         URL(
             fileURLWithPath:
-                "/tmp/com.quotaview.codex-activity-\(getuid())",
+                "/tmp/com.zmjza.codexquotaview.codex-activity-\(getuid())",
             isDirectory: true
         )
         .appendingPathComponent("diagnostics.log")
@@ -2037,7 +2037,7 @@ struct CodexActivityHookInstaller: Sendable {
         var errorDescription: String? {
             switch self {
             case .helperUnavailable:
-                "当前 QuotaView 构建中缺少活动 Hook 辅助程序。"
+                "当前 CodexQuotaView 构建中缺少活动 Hook 辅助程序。"
             case .invalidHooksFile:
                 "现有 Codex hooks.json 不是有效的 JSON 对象。"
             case .helperInstallationFailed:
@@ -2050,7 +2050,7 @@ struct CodexActivityHookInstaller: Sendable {
         let hookDefinitionChanged: Bool
     }
 
-    private static let commandMarker = "QuotaViewActivityHook"
+    private static let commandMarker = "CodexQuotaViewActivityHook"
     private static let eventNames = CodexActivityHookEvent.allCases
         .map(\.rawValue)
 
@@ -2086,7 +2086,7 @@ struct CodexActivityHookInstaller: Sendable {
                 for: .applicationSupportDirectory,
                 in: .userDomainMask
             ).first!
-                .appendingPathComponent("QuotaView", isDirectory: true)
+                .appendingPathComponent("CodexQuotaView", isDirectory: true)
                 .appendingPathComponent("Helpers", isDirectory: true)
                 .appendingPathComponent(Self.commandMarker)
         }
@@ -2116,7 +2116,7 @@ struct CodexActivityHookInstaller: Sendable {
         }
     }
 
-    func hasQuotaViewHandlers() throws -> Bool {
+    func hasCodexQuotaViewHandlers() throws -> Bool {
         guard FileManager.default.fileExists(atPath: hooksURL.path) else {
             return false
         }
@@ -2146,7 +2146,7 @@ struct CodexActivityHookInstaller: Sendable {
 
         var root = try readRoot(allowMissing: true)
         var hooks = try readHooks(from: root)
-        hooks = removingQuotaViewHandlers(from: hooks)
+        hooks = removingCodexQuotaViewHandlers(from: hooks)
 
         let command = hookCommand()
 
@@ -2174,7 +2174,7 @@ struct CodexActivityHookInstaller: Sendable {
         if FileManager.default.fileExists(atPath: hooksURL.path) {
             var root = try readRoot()
             let hooks = try readHooks(from: root)
-            root["hooks"] = removingQuotaViewHandlers(from: hooks)
+            root["hooks"] = removingCodexQuotaViewHandlers(from: hooks)
             try writeRoot(root)
         }
         if installedHelperURL != bundledHelperURL,
@@ -2191,7 +2191,7 @@ struct CodexActivityHookInstaller: Sendable {
             if allowMissing {
                 return [
                     "description":
-                        "User-level Codex hooks, including QuotaView activity."
+                        "User-level Codex hooks, including CodexQuotaView activity."
                 ]
             }
             return [:]
@@ -2308,7 +2308,7 @@ struct CodexActivityHookInstaller: Sendable {
         }
     }
 
-    private func removingQuotaViewHandlers(
+    private func removingCodexQuotaViewHandlers(
         from hooks: [String: Any]
     ) -> [String: Any] {
         var result = hooks

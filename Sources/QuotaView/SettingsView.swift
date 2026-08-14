@@ -1,5 +1,5 @@
 import AppKit
-import QuotaViewCore
+import CodexQuotaViewCore
 import SwiftUI
 
 enum SettingsWindowMetrics {
@@ -81,8 +81,8 @@ struct SettingsView: View {
                 )
             case .popover:
                 copy.text(
-                    "管理 QuotaView 主面板中的数据和操作。",
-                    "Manage the data and actions shown in the QuotaView popover."
+                    "管理 CodexQuotaView 主面板中的数据和操作。",
+                    "Manage the data and actions shown in the CodexQuotaView popover."
                 )
             case .codexActivity:
                 copy.text(
@@ -96,8 +96,8 @@ struct SettingsView: View {
                 )
             case .language:
                 copy.text(
-                    "选择 QuotaView 界面使用的语言。",
-                    "Choose the language used throughout QuotaView."
+                    "选择 CodexQuotaView 界面使用的语言。",
+                    "Choose the language used throughout CodexQuotaView."
                 )
             case .general:
                 copy.text(
@@ -241,8 +241,8 @@ struct SettingsView: View {
                 component: .statusIcon,
                 title: copy.text("状态图标", "Status icon"),
                 subtitle: copy.text(
-                    "在菜单栏中显示 QuotaView 图标。",
-                    "Show the QuotaView icon in the menu bar."
+                    "在菜单栏中显示 CodexQuotaView 图标。",
+                    "Show the CodexQuotaView icon in the menu bar."
                 )
             )
 
@@ -392,8 +392,8 @@ struct SettingsView: View {
 
             NativeSettingsNote(
                 text: copy.text(
-                    "修改会立即反映在 QuotaView 状态栏面板中。",
-                    "Changes appear in the QuotaView menu bar panel immediately."
+                    "修改会立即反映在 CodexQuotaView 状态栏面板中。",
+                    "Changes appear in the CodexQuotaView menu bar panel immediately."
                 )
             )
         }
@@ -475,9 +475,9 @@ struct SettingsView: View {
                         selection: $preferences.glassMode
                     ) {
                         Text(copy.text("磨砂", "Frosted"))
-                            .tag(QuotaViewGlassMode.frosted)
+                            .tag(CodexQuotaViewGlassMode.frosted)
                         Text(copy.text("清透", "Clear"))
-                            .tag(QuotaViewGlassMode.clear)
+                            .tag(CodexQuotaViewGlassMode.clear)
                     }
                     .labelsHidden()
                     .pickerStyle(.segmented)
@@ -561,8 +561,8 @@ struct SettingsView: View {
 
                 NativeSettingsNote(
                     text: copy.text(
-                        "首次连接只需进行一次 Codex 安全确认。QuotaView 不读取提示词、命令正文、工具输出或会话记录。",
-                        "First-time setup requires one Codex security review. QuotaView does not read prompts, command text, tool output, or transcripts."
+                        "首次连接只需进行一次 Codex 安全确认。CodexQuotaView 不读取提示词、命令正文、工具输出或会话记录。",
+                        "First-time setup requires one Codex security review. CodexQuotaView does not read prompts, command text, tool output, or transcripts."
                     )
                 )
 
@@ -701,10 +701,10 @@ struct SettingsView: View {
                     y: 5
                 )
                 .accessibilityLabel(
-                    copy.text("QuotaView 应用图标", "QuotaView app icon")
+                    copy.text("CodexQuotaView 应用图标", "CodexQuotaView app icon")
                 )
 
-            Text("QuotaView")
+            Text("CodexQuotaView")
                 .font(.system(size: 28, weight: .semibold))
                 .foregroundStyle(.primary)
                 .padding(.top, 18)
@@ -792,7 +792,7 @@ struct SettingsView: View {
         case .available:
             return copy.text(
                 "开启后每 24 小时自动检查；下载与安装始终需要你的确认。",
-                "When enabled, QuotaView checks every 24 hours; downloads and installation always require your confirmation."
+                "When enabled, CodexQuotaView checks every 24 hours; downloads and installation always require your confirmation."
             )
         case .debugBuild:
             return copy.text(
@@ -807,8 +807,8 @@ struct SettingsView: View {
         case .unexpectedBundleIdentifier,
              .untrustedSignature:
             return copy.text(
-                "只有经 QuotaView 正式签名的应用支持在线更新。",
-                "Online updates are available only in an officially signed QuotaView app."
+                "只有经 CodexQuotaView 正式签名的应用支持在线更新。",
+                "Online updates are available only in an officially signed CodexQuotaView app."
             )
         case .invalidConfiguration:
             return copy.text(
@@ -907,8 +907,8 @@ struct SettingsView: View {
             ? copy.text("深色", "dark")
             : copy.text("浅色", "light")
         return copy.text(
-            "QuotaView 将固定使用\(selected)模式。",
-            "QuotaView will always use the \(selected) appearance."
+            "CodexQuotaView 将固定使用\(selected)模式。",
+            "CodexQuotaView will always use the \(selected) appearance."
         )
     }
 
@@ -927,8 +927,8 @@ struct SettingsView: View {
             ? "简体中文"
             : "English"
         return copy.text(
-            "QuotaView 将固定使用\(language)。",
-            "QuotaView will always use \(language)."
+            "CodexQuotaView 将固定使用\(language)。",
+            "CodexQuotaView will always use \(language)."
         )
     }
 
@@ -1029,8 +1029,8 @@ struct SettingsView: View {
             )
         case .awaitingTrust:
             copy.text(
-                "等待 CLI 完成首次加载；QuotaView 自动输入 /hooks 并进入 Hooks 页面后，再按 T。",
-                "Wait for the CLI to finish its first load. Press T only after QuotaView enters /hooks and opens the Hooks page."
+                "等待 CLI 完成首次加载；CodexQuotaView 自动输入 /hooks 并进入 Hooks 页面后，再按 T。",
+                "Wait for the CLI to finish its first load. Press T only after CodexQuotaView enters /hooks and opens the Hooks page."
             )
         case .awaitingFirstEvent:
             copy.text(
@@ -1141,13 +1141,13 @@ struct SettingsView: View {
         switch activityRuntime.connectionStatus {
         case .installedNeedsRestart:
             copy.text(
-                "QuotaView 会安全退出并重新打开 Codex；重新启动后无需再次配置。",
-                "QuotaView safely quits and reopens Codex. No further setup is needed after restart."
+                "CodexQuotaView 会安全退出并重新打开 Codex；重新启动后无需再次配置。",
+                "CodexQuotaView safely quits and reopens Codex. No further setup is needed after restart."
             )
         case .awaitingTrust:
             copy.text(
-                "请先等待 CLI 完成首次加载。QuotaView 会自动输入 /hooks；只有看到 Hooks 页面和“Press t to trust all”提示后再按 T，不要在普通输入框中提前按键。",
-                "Wait for the CLI to finish its first load. QuotaView enters /hooks automatically. Press T only after the Hooks page shows “Press t to trust all”; do not press it in the normal prompt."
+                "请先等待 CLI 完成首次加载。CodexQuotaView 会自动输入 /hooks；只有看到 Hooks 页面和“Press t to trust all”提示后再按 T，不要在普通输入框中提前按键。",
+                "Wait for the CLI to finish its first load. CodexQuotaView enters /hooks automatically. Press T only after the Hooks page shows “Press t to trust all”; do not press it in the normal prompt."
             )
         case .awaitingFirstEvent:
             copy.text(
@@ -1531,8 +1531,8 @@ struct MenuBarStatusLabel: View {
     private var accessibilityStatus: String {
         if let error = store.errorMessage {
             return copy.text(
-                "QuotaView：\(error)",
-                "QuotaView: \(error)"
+                "CodexQuotaView：\(error)",
+                "CodexQuotaView: \(error)"
             )
         }
         if let snapshot = store.snapshot {
@@ -1542,8 +1542,8 @@ struct MenuBarStatusLabel: View {
             )
         }
         return copy.text(
-            "QuotaView 正在连接",
-            "QuotaView is connecting"
+            "CodexQuotaView 正在连接",
+            "CodexQuotaView is connecting"
         )
     }
 
@@ -1599,7 +1599,7 @@ struct MenuBarBrandIcon: View {
             height: Metrics.height
         )
 
-        guard let source = NSImage(named: "QuotaViewMenuIcon") else {
+        guard let source = NSImage(named: "CodexQuotaViewMenuIcon") else {
             let image = NSImage(size: canvasSize)
             image.isTemplate = true
             return image

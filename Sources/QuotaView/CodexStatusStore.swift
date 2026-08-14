@@ -1,6 +1,6 @@
 import Combine
 import Foundation
-import QuotaViewCore
+import CodexQuotaViewCore
 import SwiftUI
 
 @MainActor
@@ -17,7 +17,7 @@ final class CodexStatusStore: ObservableObject {
     private let projector: CurrentCodexPresentationProjector
     private let diagnostics: UserDefaults
     private let demoExecutor: any QuotaActionExecutor
-    private let widgetSnapshotWriter: QuotaViewWidgetSnapshotWriter
+    private let widgetSnapshotWriter: CodexQuotaViewWidgetSnapshotWriter
     private weak var preferences: AppPreferences?
     private var pollingTask: Task<Void, Never>?
     private var demandCancellable: AnyCancellable?
@@ -31,7 +31,7 @@ final class CodexStatusStore: ObservableObject {
             CurrentCodexPresentationProjector(),
         demoExecutor: any QuotaActionExecutor =
             DemoQuotaActionExecutor(),
-        widgetSnapshotWriter: QuotaViewWidgetSnapshotWriter? = nil
+        widgetSnapshotWriter: CodexQuotaViewWidgetSnapshotWriter? = nil
     ) {
         let provider = provider ?? CodexProviderAdapter()
         let showsTokenUsage = preferences.map {
@@ -56,7 +56,7 @@ final class CodexStatusStore: ObservableObject {
         self.projector = projector
         self.demoExecutor = demoExecutor
         self.widgetSnapshotWriter =
-            widgetSnapshotWriter ?? QuotaViewWidgetSnapshotWriter()
+            widgetSnapshotWriter ?? CodexQuotaViewWidgetSnapshotWriter()
         self.preferences = preferences
 
         if let preferences {
@@ -101,12 +101,12 @@ final class CodexStatusStore: ObservableObject {
 
     var accessibilityStatus: String {
         if let errorMessage {
-            return "QuotaView：\(errorMessage)"
+            return "CodexQuotaView：\(errorMessage)"
         }
         if let snapshot {
             return "Codex \(snapshot.availability.displayName)，剩余 \(snapshot.remainingPercent)%"
         }
-        return "QuotaView 正在连接"
+        return "CodexQuotaView 正在连接"
     }
 
     var hasCurrentCodexStatus: Bool {

@@ -1,6 +1,6 @@
 import XCTest
-@testable import QuotaViewCore
-@testable import QuotaViewFutureContracts
+@testable import CodexQuotaViewCore
+@testable import CodexQuotaViewFutureContracts
 
 final class ArchitectureTests: XCTestCase {
     func testDemandPlannerMergesConsumersWithoutDisabledProviders() {

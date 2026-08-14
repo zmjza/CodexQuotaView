@@ -1,5 +1,5 @@
 import XCTest
-@testable import QuotaViewCore
+@testable import CodexQuotaViewCore
 
 final class CodexModelsTests: XCTestCase {
     func testProviderMapsCurrentAndHistoricalUsage() throws {

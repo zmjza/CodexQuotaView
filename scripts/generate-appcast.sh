@@ -26,10 +26,10 @@ build_number="$(
         "${info_plist}"
 )"
 expected_tag="v${version}-build.${build_number}"
-release_name="QuotaView-v${version}-build.${build_number}"
+release_name="CodexQuotaView-v${version}-build.${build_number}"
 release_archive="${archives_dir}/${release_name}.zip"
 appcast_path="${archives_dir}/appcast.xml"
-sparkle_key_account="${SPARKLE_KEY_ACCOUNT:-com.quotaview.menubar}"
+sparkle_key_account="${SPARKLE_KEY_ACCOUNT:-com.zmjza.codexquotaview.menubar}"
 
 if [[ "${release_tag}" != "${expected_tag}" ]]; then
     print -u2 \
@@ -94,14 +94,14 @@ if [[ ! -x "${generate_appcast_tool}" ]] \
     exit 3
 fi
 
-download_url_prefix="https://github.com/Duoasa/QuotaView/releases/download/${release_tag}/"
-release_url="https://github.com/Duoasa/QuotaView/releases/tag/${release_tag}"
+download_url_prefix="https://github.com/Duoasa/CodexQuotaView/releases/download/${release_tag}/"
+release_url="https://github.com/Duoasa/CodexQuotaView/releases/tag/${release_tag}"
 
 "${generate_appcast_tool}" \
     --account "${sparkle_key_account}" \
     --download-url-prefix "${download_url_prefix}" \
     --full-release-notes-url "${release_url}" \
-    --link "https://github.com/Duoasa/QuotaView" \
+    --link "https://github.com/Duoasa/CodexQuotaView" \
     --maximum-versions 3 \
     --maximum-deltas 0 \
     -o "${appcast_path}" \

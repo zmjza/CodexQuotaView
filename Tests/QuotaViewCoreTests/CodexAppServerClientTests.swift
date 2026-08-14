@@ -1,6 +1,6 @@
 import Foundation
 import XCTest
-@testable import QuotaViewCore
+@testable import CodexQuotaViewCore
 
 final class CodexAppServerClientTests: XCTestCase {
     func testClientReadsDelayedJSONLinesFromAppServerProcess() async throws {

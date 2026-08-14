@@ -15,17 +15,55 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: Swift tests
+  macos:
+    name: macOS Swift tests and fixtures
     runs-on: macos-26
-    timeout-minutes: 15
-
+    timeout-minutes: 20
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v6
-
+      - uses: actions/checkout@v6
       - name: Show Swift version
         run: swift --version
-
+      - name: Validate shared fixtures
+        run: python3 scripts/validate-fixtures.py
+      - name: Build package
+        run: swift build
       - name: Run tests
         run: swift test
+
+  windows:
+    name: Windows .NET tests and fixtures
+    runs-on: windows-2025
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Restore
+        run: dotnet restore Windows/CodexQuotaView.sln
+      - name: Build
+        run: dotnet build Windows/CodexQuotaView.sln -c Release --no-restore
+      - name: Run tests
+        run: dotnet test Windows/tests/CodexQuotaView.Core.Tests/CodexQuotaView.Core.Tests.csproj -c Release --no-build
+      - name: Validate shared fixtures
+        run: dotnet run --project Windows/src/CodexQuotaView.FixtureRunner/CodexQuotaView.FixtureRunner.csproj -c Release
+      - name: Smoke test backend selection
+        run: dotnet run --project Windows/tests/CodexQuotaView.Smoke/CodexQuotaView.Smoke.csproj -c Release
+
+  windows-app:
+    name: Windows WinUI x64 app and native rendering
+    runs-on: windows-2025
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Set up MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: Restore app
+        run: dotnet restore Windows/src/CodexQuotaView.App/CodexQuotaView.App.csproj -r win-x64
+      - name: Build app and native rendering
+        run: msbuild Windows/src/CodexQuotaView.App/CodexQuotaView.App.csproj -p:Configuration=Release -p:Platform=x64 -restore

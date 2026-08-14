@@ -1,12 +1,12 @@
 #include "Shared.xcconfig"
 
-PRODUCT_NAME = QuotaView
-PRODUCT_BUNDLE_IDENTIFIER = com.quotaview.menubar
+PRODUCT_NAME = CodexQuotaView
+PRODUCT_BUNDLE_IDENTIFIER = com.zmjza.codexquotaview.menubar
 MARKETING_VERSION = 0.3.5
 CURRENT_PROJECT_VERSION = 5
 
-QUOTAVIEW_APP_GROUP_ID = BUUH229D5Q.com.quotaview.shared
-QUOTAVIEW_WIDGET_BUNDLE_ID = com.quotaview.menubar.widget
+CODEXQUOTAVIEW_APP_GROUP_ID = TEAMID.com.zmjza.codexquotaview.shared
+CODEXQUOTAVIEW_WIDGET_BUNDLE_ID = com.zmjza.codexquotaview.menubar.widget
 
 GENERATE_INFOPLIST_FILE = NO
 INFOPLIST_FILE = Support/Info.plist
@@ -14,7 +14,7 @@ INFOPLIST_FILE = Support/Info.plist
 ENABLE_APP_SANDBOX = NO
 ENABLE_HARDENED_RUNTIME = YES
 REGISTER_APP_GROUPS = YES
-CODE_SIGN_ENTITLEMENTS = Support/QuotaView.entitlements
+CODE_SIGN_ENTITLEMENTS = Support/CodexQuotaView.entitlements
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/../Frameworks
 ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor
 ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon

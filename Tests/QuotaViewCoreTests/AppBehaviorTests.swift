@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
-@testable import QuotaView
-@testable import QuotaViewCore
+@testable import CodexQuotaView
+@testable import CodexQuotaViewCore
 
 final class AppBehaviorTests: XCTestCase {
     func testAppUpdateEnvironmentAcceptsOnlyTrustedConfiguration() {
@@ -110,10 +110,10 @@ final class AppBehaviorTests: XCTestCase {
     private func makeUpdateEnvironment(
         isDebugBuild: Bool = false,
         isApplicationBundle: Bool = true,
-        bundleIdentifier: String? = "com.quotaview.menubar",
-        signingTeamIdentifier: String? = "BUUH229D5Q",
+        bundleIdentifier: String? = "com.zmjza.codexquotaview.menubar",
+        signingTeamIdentifier: String? = "TEAMID",
         feedURLString: String? =
-            "https://duoasa.github.io/QuotaView/appcast.xml",
+            "https://zmjza.github.io/CodexQuotaView/appcast.xml",
         publicEDKey: String? =
             "cu6dSd9lxpFU+KdiqaiTanblnNMWQVaj2oTxs7jf/6A="
     ) -> AppUpdateEnvironment {
@@ -121,9 +121,9 @@ final class AppBehaviorTests: XCTestCase {
             isDebugBuild: isDebugBuild,
             isApplicationBundle: isApplicationBundle,
             bundleIdentifier: bundleIdentifier,
-            expectedBundleIdentifier: "com.quotaview.menubar",
+            expectedBundleIdentifier: "com.zmjza.codexquotaview.menubar",
             signingTeamIdentifier: signingTeamIdentifier,
-            expectedSigningTeamIdentifier: "BUUH229D5Q",
+            expectedSigningTeamIdentifier: "TEAMID",
             feedURLString: feedURLString,
             publicEDKey: publicEDKey
         )
@@ -278,7 +278,7 @@ final class AppBehaviorTests: XCTestCase {
         let fileManager = FileManager.default
         let rootURL = fileManager.temporaryDirectory
             .appendingPathComponent(
-                "QuotaViewSecurityReviewTests-\(UUID().uuidString)",
+                "CodexQuotaViewSecurityReviewTests-\(UUID().uuidString)",
                 isDirectory: true
             )
         defer { try? fileManager.removeItem(at: rootURL) }
@@ -329,7 +329,7 @@ final class AppBehaviorTests: XCTestCase {
         )
         let launcherURL = try launcher.prepareLauncher()
         let expectURL = launcherURL.deletingLastPathComponent()
-            .appendingPathComponent("QuotaViewHookReview.exp")
+            .appendingPathComponent("CodexQuotaViewHookReview.exp")
         let launcherContents = try String(
             contentsOf: launcherURL,
             encoding: .utf8
@@ -531,7 +531,7 @@ final class AppBehaviorTests: XCTestCase {
         let fileManager = FileManager.default
         let rootURL = fileManager.temporaryDirectory
             .appendingPathComponent(
-                "QuotaViewHookInstallerTests-\(UUID().uuidString)",
+                "CodexQuotaViewHookInstallerTests-\(UUID().uuidString)",
                 isDirectory: true
             )
         defer { try? fileManager.removeItem(at: rootURL) }
@@ -542,11 +542,11 @@ final class AppBehaviorTests: XCTestCase {
 
         let hooksURL = rootURL.appendingPathComponent("hooks.json")
         let helperURL = rootURL.appendingPathComponent(
-            "BundledQuotaViewActivityHook"
+            "BundledCodexQuotaViewActivityHook"
         )
         let installedHelperURL = rootURL
             .appendingPathComponent("Application Support")
-            .appendingPathComponent("QuotaViewActivityHook")
+            .appendingPathComponent("CodexQuotaViewActivityHook")
         try fileManager.createDirectory(
             at: installedHelperURL.deletingLastPathComponent(),
             withIntermediateDirectories: true
@@ -615,7 +615,7 @@ final class AppBehaviorTests: XCTestCase {
             }
             XCTAssertEqual(
                 commands.filter {
-                    $0.contains("QuotaViewActivityHook")
+                    $0.contains("CodexQuotaViewActivityHook")
                 }.count,
                 1
             )
@@ -669,7 +669,7 @@ final class AppBehaviorTests: XCTestCase {
                     $0["hooks"] as? [[String: Any]] ?? []
                 }.allSatisfy {
                     !(($0["command"] as? String) ?? "")
-                        .contains("QuotaViewActivityHook")
+                        .contains("CodexQuotaViewActivityHook")
                 }
             }
         )
@@ -690,7 +690,7 @@ final class AppBehaviorTests: XCTestCase {
         let fileManager = FileManager.default
         let rootURL = fileManager.temporaryDirectory
             .appendingPathComponent(
-                "QuotaViewCodexEnvironmentTests-\(UUID().uuidString)",
+                "CodexQuotaViewCodexEnvironmentTests-\(UUID().uuidString)",
                 isDirectory: true
             )
         defer { try? fileManager.removeItem(at: rootURL) }
@@ -746,7 +746,7 @@ final class AppBehaviorTests: XCTestCase {
         let fileManager = FileManager.default
         let rootURL = fileManager.temporaryDirectory
             .appendingPathComponent(
-                "QuotaViewInvalidHookTests-\(UUID().uuidString)",
+                "CodexQuotaViewInvalidHookTests-\(UUID().uuidString)",
                 isDirectory: true
             )
         defer { try? fileManager.removeItem(at: rootURL) }
@@ -756,7 +756,7 @@ final class AppBehaviorTests: XCTestCase {
         )
         let hooksURL = rootURL.appendingPathComponent("hooks.json")
         let helperURL = rootURL.appendingPathComponent(
-            "QuotaViewActivityHook"
+            "CodexQuotaViewActivityHook"
         )
         try Data("#!/bin/sh\nexit 0\n".utf8).write(to: helperURL)
         try fileManager.setAttributes(
@@ -782,7 +782,7 @@ final class AppBehaviorTests: XCTestCase {
         let fileManager = FileManager.default
         let queueURL = fileManager.temporaryDirectory
             .appendingPathComponent(
-                "QuotaViewActivityQueueTests-\(UUID().uuidString)",
+                "CodexQuotaViewActivityQueueTests-\(UUID().uuidString)",
                 isDirectory: true
             )
         let bridge = CodexActivityFileBridge(
@@ -851,7 +851,7 @@ final class AppBehaviorTests: XCTestCase {
 
     @MainActor
     func testNativePreferenceDefaults() {
-        let suiteName = "QuotaViewTests.\(UUID().uuidString)"
+        let suiteName = "CodexQuotaViewTests.\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: suiteName)!
         defer {
             defaults.removePersistentDomain(forName: suiteName)
@@ -887,7 +887,7 @@ final class AppBehaviorTests: XCTestCase {
 
     @MainActor
     func testSavedNativePreferencesAndLegacyGlassMigration() {
-        let savedSuiteName = "QuotaViewTests.\(UUID().uuidString)"
+        let savedSuiteName = "CodexQuotaViewTests.\(UUID().uuidString)"
         let savedDefaults = UserDefaults(suiteName: savedSuiteName)!
         defer {
             savedDefaults.removePersistentDomain(forName: savedSuiteName)
@@ -901,7 +901,7 @@ final class AppBehaviorTests: XCTestCase {
             forKey: "preferences.appearance.custom"
         )
         savedDefaults.set(
-            QuotaViewGlassMode.frosted.rawValue,
+            CodexQuotaViewGlassMode.frosted.rawValue,
             forKey: "preferences.appearance.glassPreset"
         )
         savedDefaults.set(
@@ -952,7 +952,7 @@ final class AppBehaviorTests: XCTestCase {
             AppPreferences.TokenActivityRange.sixMonths.rawValue
         )
 
-        let legacySuiteName = "QuotaViewTests.\(UUID().uuidString)"
+        let legacySuiteName = "CodexQuotaViewTests.\(UUID().uuidString)"
         let legacyDefaults = UserDefaults(suiteName: legacySuiteName)!
         defer {
             legacyDefaults.removePersistentDomain(forName: legacySuiteName)
@@ -975,7 +975,7 @@ final class AppBehaviorTests: XCTestCase {
 
     @MainActor
     func testWidgetKeepsOptionalUsageDemandForDetailedMetrics() async {
-        let suiteName = "QuotaViewTests.\(UUID().uuidString)"
+        let suiteName = "CodexQuotaViewTests.\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: suiteName)!
         defer {
             defaults.removePersistentDomain(forName: suiteName)
@@ -1029,7 +1029,7 @@ final class AppBehaviorTests: XCTestCase {
 
     @MainActor
     func testDemoResetUsesSimulationBoundary() async {
-        let suiteName = "QuotaViewTests.\(UUID().uuidString)"
+        let suiteName = "CodexQuotaViewTests.\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: suiteName)!
         defer {
             defaults.removePersistentDomain(forName: suiteName)
@@ -1053,7 +1053,7 @@ final class AppBehaviorTests: XCTestCase {
 
     @MainActor
     func testMissingOptionalValuesRemainUnavailable() async {
-        let suiteName = "QuotaViewTests.\(UUID().uuidString)"
+        let suiteName = "CodexQuotaViewTests.\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: suiteName)!
         defer {
             defaults.removePersistentDomain(forName: suiteName)
@@ -1396,7 +1396,7 @@ final class AppBehaviorTests: XCTestCase {
 
     @MainActor
     func testZeroResetCreditsDoNotExposeDemoAction() async {
-        let suiteName = "QuotaViewTests.\(UUID().uuidString)"
+        let suiteName = "CodexQuotaViewTests.\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: suiteName)!
         defer {
             defaults.removePersistentDomain(forName: suiteName)
@@ -1420,7 +1420,7 @@ final class AppBehaviorTests: XCTestCase {
 
     @MainActor
     func testLatestProviderFailureClearsPresentation() async {
-        let suiteName = "QuotaViewTests.\(UUID().uuidString)"
+        let suiteName = "CodexQuotaViewTests.\(UUID().uuidString)"
         let defaults = UserDefaults(suiteName: suiteName)!
         defer {
             defaults.removePersistentDomain(forName: suiteName)
@@ -1532,7 +1532,7 @@ private struct AppStubProvider:
     let descriptor = ProviderDescriptor(
         id: CodexDomainCatalog.providerID,
         displayName: "Codex",
-        capabilities: .currentQuotaViewFeatures,
+        capabilities: .currentCodexQuotaViewFeatures,
         sourceKinds: [.localAppServer],
         resourceProfile: ProviderResourceProfile(
             minimumRefreshInterval: 1,

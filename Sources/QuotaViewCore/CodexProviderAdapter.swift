@@ -123,7 +123,7 @@ public struct CodexProviderAdapter: UsageProviderAdapter, Sendable {
     public let descriptor = ProviderDescriptor(
         id: CodexDomainCatalog.providerID,
         displayName: "Codex",
-        capabilities: .currentQuotaViewFeatures,
+        capabilities: .currentCodexQuotaViewFeatures,
         sourceKinds: [.localAppServer],
         resourceProfile: ProviderResourceProfile(
             minimumRefreshInterval: 60,

@@ -3,26 +3,26 @@
 import PackageDescription
 
 let package = Package(
-    name: "QuotaView",
+    name: "CodexQuotaView",
     platforms: [
         .macOS(.v14)
     ],
     products: [
-        .library(name: "QuotaViewCore", targets: ["QuotaViewCore"]),
+        .library(name: "CodexQuotaViewCore", targets: ["CodexQuotaViewCore"]),
         .library(
-            name: "QuotaViewWidgetContract",
-            targets: ["QuotaViewWidgetContract"]
+            name: "CodexQuotaViewWidgetContract",
+            targets: ["CodexQuotaViewWidgetContract"]
         ),
         .library(
-            name: "QuotaViewFutureContracts",
-            targets: ["QuotaViewFutureContracts"]
+            name: "CodexQuotaViewFutureContracts",
+            targets: ["CodexQuotaViewFutureContracts"]
         ),
-        .executable(name: "QuotaView", targets: ["QuotaView"]),
+        .executable(name: "CodexQuotaView", targets: ["CodexQuotaView"]),
         .executable(
-            name: "QuotaViewActivityHook",
-            targets: ["QuotaViewActivityHook"]
+            name: "CodexQuotaViewActivityHook",
+            targets: ["CodexQuotaViewActivityHook"]
         ),
-        .executable(name: "QuotaViewProbe", targets: ["QuotaViewProbe"])
+        .executable(name: "CodexQuotaViewProbe", targets: ["CodexQuotaViewProbe"])
     ],
     dependencies: [
         .package(
@@ -32,44 +32,51 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "QuotaViewCore",
+            name: "CodexQuotaViewCore",
+            path: "Sources/QuotaViewCore",
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .target(
-            name: "QuotaViewWidgetContract",
+            name: "CodexQuotaViewWidgetContract",
+            path: "Sources/QuotaViewWidgetContract",
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .target(
-            name: "QuotaViewFutureContracts",
-            dependencies: ["QuotaViewCore"],
+            name: "CodexQuotaViewFutureContracts",
+            dependencies: ["CodexQuotaViewCore"],
+            path: "Sources/QuotaViewFutureContracts",
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .executableTarget(
-            name: "QuotaView",
+            name: "CodexQuotaView",
             dependencies: [
-                "QuotaViewCore",
-                "QuotaViewWidgetContract",
+                "CodexQuotaViewCore",
+                "CodexQuotaViewWidgetContract",
                 .product(name: "Sparkle", package: "Sparkle")
             ],
+            path: "Sources/QuotaView",
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .executableTarget(
-            name: "QuotaViewProbe",
-            dependencies: ["QuotaViewCore"],
+            name: "CodexQuotaViewProbe",
+            dependencies: ["CodexQuotaViewCore"],
+            path: "Sources/QuotaViewProbe",
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .executableTarget(
-            name: "QuotaViewActivityHook",
+            name: "CodexQuotaViewActivityHook",
+            path: "Sources/QuotaViewActivityHook",
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .testTarget(
-            name: "QuotaViewCoreTests",
+            name: "CodexQuotaViewCoreTests",
             dependencies: [
-                "QuotaViewCore",
-                "QuotaViewWidgetContract",
-                "QuotaViewFutureContracts",
-                "QuotaView"
+                "CodexQuotaViewCore",
+                "CodexQuotaViewWidgetContract",
+                "CodexQuotaViewFutureContracts",
+                "CodexQuotaView"
             ],
+            path: "Tests/QuotaViewCoreTests",
             swiftSettings: [.swiftLanguageMode(.v5)]
         )
     ]

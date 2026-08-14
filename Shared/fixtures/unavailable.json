@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-08-14T08:30:00Z",
+  "availability": "unavailable",
+  "serviceHealth": "offline",
+  "plan": null,
+  "primaryWindow": null,
+  "sparkWindow": null,
+  "creditBalance": null,
+  "hasCredits": false,
+  "unlimitedCredits": false,
+  "resetCredits": null,
+  "recentDailyTokens": null,
+  "tokens30d": null,
+  "lifetimeTokens": null,
+  "estimatedCost30d": null,
+  "dailyActivity": [],
+  "sanitizedError": null
+}

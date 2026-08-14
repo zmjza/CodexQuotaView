@@ -176,7 +176,7 @@ final class AppPreferences: ObservableObject {
         }
     }
 
-    @Published var glassMode: QuotaViewGlassMode {
+    @Published var glassMode: CodexQuotaViewGlassMode {
         didSet {
             defaults.set(
                 glassMode.rawValue,
@@ -278,7 +278,7 @@ final class AppPreferences: ObservableObject {
         customAppearance = AppearanceMode(
             rawValue: defaults.string(forKey: Key.customAppearance) ?? ""
         ) ?? .dark
-        glassMode = QuotaViewGlassMode(
+        glassMode = CodexQuotaViewGlassMode(
             rawValue: defaults.string(forKey: Key.glassMode) ?? ""
         ) ?? .clear
         followsSystemLanguage = defaults.storedBool(

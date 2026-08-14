@@ -248,7 +248,7 @@ public actor CodexAppServerClient {
                 params: [
                     "clientInfo": [
                         "name": "quotaview",
-                        "title": "QuotaView",
+                        "title": "CodexQuotaView",
                         "version": clientVersion
                     ]
                 ],

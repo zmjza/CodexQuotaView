@@ -17,7 +17,7 @@ public struct ProviderCapabilities: OptionSet, Hashable, Sendable {
     public static let resetCredits = Self(rawValue: 1 << 7)
     public static let officialActions = Self(rawValue: 1 << 8)
 
-    public static let currentQuotaViewFeatures: Self = [
+    public static let currentCodexQuotaViewFeatures: Self = [
         .currentUsage,
         .rateWindows,
         .balances,

@@ -1,7 +1,7 @@
 import AppKit
-import QuotaViewCore
-#if canImport(QuotaViewWidgetContract)
-import QuotaViewWidgetContract
+import CodexQuotaViewCore
+#if canImport(CodexQuotaViewWidgetContract)
+import CodexQuotaViewWidgetContract
 #endif
 import SwiftUI
 
@@ -71,7 +71,7 @@ enum EstimatedCostChartMetrics {
     }
 }
 
-struct QuotaViewFigmaMenu: View {
+struct CodexQuotaViewFigmaMenu: View {
     nonisolated static let designSize = CGSize(width: 274, height: 433)
 
     @ObservedObject var store: CodexStatusStore
@@ -87,7 +87,7 @@ struct QuotaViewFigmaMenu: View {
     let quitAction: () -> Void
 
     private enum Layout {
-        static let width = QuotaViewFigmaMenu.designSize.width
+        static let width = CodexQuotaViewFigmaMenu.designSize.width
         static let headerHeight: CGFloat = 48
         static let summaryHeight: CGFloat = 117
         static let sparkSummaryHeight: CGFloat = 82
@@ -225,7 +225,7 @@ struct QuotaViewFigmaMenu: View {
         HStack(spacing: 6) {
             appIcon
 
-            Text("QuotaView")
+            Text("CodexQuotaView")
                 .font(AstaSans.semiBold(15))
                 .tracking(-0.15)
                 .foregroundStyle(primaryTextColor)
@@ -235,12 +235,12 @@ struct QuotaViewFigmaMenu: View {
             Spacer(minLength: 6)
 
             Button(action: quitAction) {
-                figmaIcon("QuotaViewFigmaPower")
+                figmaIcon("CodexQuotaViewFigmaPower")
             }
             .quotaViewInteractiveButton(.compact)
-            .help(copy.text("退出 QuotaView", "Quit QuotaView"))
+            .help(copy.text("退出 CodexQuotaView", "Quit CodexQuotaView"))
             .accessibilityLabel(
-                copy.text("退出 QuotaView", "Quit QuotaView")
+                copy.text("退出 CodexQuotaView", "Quit CodexQuotaView")
             )
         }
         .padding(Layout.headerInset)
@@ -260,7 +260,7 @@ struct QuotaViewFigmaMenu: View {
             )
             .fill(Color.white.opacity(0.10))
 
-            Image("QuotaViewFigmaAppIcon")
+            Image("CodexQuotaViewFigmaAppIcon")
                 .resizable()
                 .interpolation(.high)
                 .scaledToFill()
@@ -936,7 +936,7 @@ struct QuotaViewFigmaMenu: View {
         .quotaViewInteractiveButton(.regular)
         .background {
             ZStack {
-                QuotaViewFigmaDropShadow(
+                CodexQuotaViewFigmaDropShadow(
                     cornerRadius: 12,
                     color: .black,
                     opacity: resetCardShadowOpacity,
@@ -944,7 +944,7 @@ struct QuotaViewFigmaMenu: View {
                     offset: CGSize(width: 0, height: 4)
                 )
 
-                QuotaViewFigmaLocalGlass(
+                CodexQuotaViewFigmaLocalGlass(
                     frostRadius: 10.5,
                     cornerRadius: 12,
                     tintColor: resetCardTintColor
@@ -1013,7 +1013,7 @@ struct QuotaViewFigmaMenu: View {
 
             HStack(spacing: 9) {
                 Button(action: refreshAction) {
-                    figmaIcon("QuotaViewFigmaSync")
+                    figmaIcon("CodexQuotaViewFigmaSync")
                 }
                 .quotaViewInteractiveButton(.compact)
                 .disabled(store.isRefreshing)
@@ -1021,7 +1021,7 @@ struct QuotaViewFigmaMenu: View {
                 .accessibilityLabel(copy.text("同步", "Sync"))
 
                 Button(action: openCodexAction) {
-                    figmaIcon("QuotaViewFigmaOpenCodex")
+                    figmaIcon("CodexQuotaViewFigmaOpenCodex")
                 }
                 .quotaViewInteractiveButton(.compact)
                 .help(copy.text("打开 Codex", "Open Codex"))
@@ -1030,7 +1030,7 @@ struct QuotaViewFigmaMenu: View {
                 )
 
                 Button(action: openSettingsAction) {
-                    figmaIcon("QuotaViewFigmaSettings")
+                    figmaIcon("CodexQuotaViewFigmaSettings")
                 }
                 .quotaViewInteractiveButton(.compact)
                 .help(copy.text("打开设置", "Open Settings"))
@@ -2417,15 +2417,15 @@ private struct TokenActivityHeatmap: View {
     }()
 }
 
-struct QuotaViewFigmaDropShadow: NSViewRepresentable {
+struct CodexQuotaViewFigmaDropShadow: NSViewRepresentable {
     let cornerRadius: CGFloat
     let color: NSColor
     let opacity: CGFloat
     let radius: CGFloat
     let offset: CGSize
 
-    func makeNSView(context: Context) -> QuotaViewFigmaCardShadowView {
-        QuotaViewFigmaCardShadowView(
+    func makeNSView(context: Context) -> CodexQuotaViewFigmaCardShadowView {
+        CodexQuotaViewFigmaCardShadowView(
             cornerRadius: cornerRadius,
             color: color,
             opacity: opacity,
@@ -2435,7 +2435,7 @@ struct QuotaViewFigmaDropShadow: NSViewRepresentable {
     }
 
     func updateNSView(
-        _ nsView: QuotaViewFigmaCardShadowView,
+        _ nsView: CodexQuotaViewFigmaCardShadowView,
         context: Context
     ) {
         nsView.update(
@@ -2448,7 +2448,7 @@ struct QuotaViewFigmaDropShadow: NSViewRepresentable {
     }
 }
 
-final class QuotaViewFigmaCardShadowView: NSView {
+final class CodexQuotaViewFigmaCardShadowView: NSView {
     private var cornerRadius: CGFloat
 
     override var isOpaque: Bool { false }
@@ -2512,15 +2512,15 @@ final class QuotaViewFigmaCardShadowView: NSView {
     }
 }
 
-struct QuotaViewFigmaLocalGlass: NSViewRepresentable {
+struct CodexQuotaViewFigmaLocalGlass: NSViewRepresentable {
     @Environment(\.quotaViewGlassMode) private var glassMode
 
     let frostRadius: CGFloat
     let cornerRadius: CGFloat
     let tintColor: NSColor
 
-    func makeNSView(context: Context) -> QuotaViewFigmaLocalGlassView {
-        QuotaViewFigmaLocalGlassView(
+    func makeNSView(context: Context) -> CodexQuotaViewFigmaLocalGlassView {
+        CodexQuotaViewFigmaLocalGlassView(
             mode: glassMode,
             frostRadius: frostRadius,
             cornerRadius: cornerRadius,
@@ -2529,7 +2529,7 @@ struct QuotaViewFigmaLocalGlass: NSViewRepresentable {
     }
 
     func updateNSView(
-        _ nsView: QuotaViewFigmaLocalGlassView,
+        _ nsView: CodexQuotaViewFigmaLocalGlassView,
         context: Context
     ) {
         nsView.update(
@@ -2541,14 +2541,14 @@ struct QuotaViewFigmaLocalGlass: NSViewRepresentable {
     }
 }
 
-final class QuotaViewFigmaLocalGlassView: NSView {
+final class CodexQuotaViewFigmaLocalGlassView: NSView {
     private let effectView: NSView
     private let tintView = NSView()
 
     override var isOpaque: Bool { false }
 
     init(
-        mode: QuotaViewGlassMode,
+        mode: CodexQuotaViewGlassMode,
         frostRadius: CGFloat,
         cornerRadius: CGFloat,
         tintColor: NSColor
@@ -2585,7 +2585,7 @@ final class QuotaViewFigmaLocalGlassView: NSView {
     }
 
     func update(
-        mode: QuotaViewGlassMode,
+        mode: CodexQuotaViewGlassMode,
         frostRadius: CGFloat,
         cornerRadius: CGFloat,
         tintColor: NSColor

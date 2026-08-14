@@ -3,7 +3,7 @@ import SwiftUI
 
 enum CodexTheme {
     // This palette is sampled from the current official Codex app icon.
-    // QuotaView remains a separate product and does not reuse OpenAI marks.
+    // CodexQuotaView remains a separate product and does not reuse OpenAI marks.
     static let accent = Color(
         red: 79.0 / 255.0,
         green: 106.0 / 255.0,
@@ -28,7 +28,7 @@ enum CodexTheme {
 
 }
 
-enum QuotaViewTypography {
+enum CodexQuotaViewTypography {
     // Keep the status-panel type scale independent of the glass material so
     // clear and frosted modes always present the same information hierarchy.
     static let menuTitle = AstaSans.semiBold(16)
@@ -48,25 +48,25 @@ enum QuotaViewTypography {
     static let primaryAction = AstaSans.semiBold(14)
 }
 
-enum QuotaViewGlassMode: String, CaseIterable, Identifiable {
+enum CodexQuotaViewGlassMode: String, CaseIterable, Identifiable {
     case frosted
     case clear
 
     var id: String { rawValue }
 }
 
-private struct QuotaViewGlassModeKey: EnvironmentKey {
-    static let defaultValue = QuotaViewGlassMode.clear
+private struct CodexQuotaViewGlassModeKey: EnvironmentKey {
+    static let defaultValue = CodexQuotaViewGlassMode.clear
 }
 
 extension EnvironmentValues {
-    var quotaViewGlassMode: QuotaViewGlassMode {
-        get { self[QuotaViewGlassModeKey.self] }
-        set { self[QuotaViewGlassModeKey.self] = newValue }
+    var quotaViewGlassMode: CodexQuotaViewGlassMode {
+        get { self[CodexQuotaViewGlassModeKey.self] }
+        set { self[CodexQuotaViewGlassModeKey.self] = newValue }
     }
 }
 
-struct QuotaViewAmbientBackground: View {
+struct CodexQuotaViewAmbientBackground: View {
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
@@ -114,7 +114,7 @@ struct QuotaViewAmbientBackground: View {
     }
 }
 
-private struct QuotaViewMenuContentBackground: View {
+private struct CodexQuotaViewMenuContentBackground: View {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.quotaViewGlassMode) private var glassMode
 
@@ -170,15 +170,15 @@ private struct QuotaViewMenuContentBackground: View {
     }
 }
 
-private struct QuotaViewMenuContentModifier: ViewModifier {
+private struct CodexQuotaViewMenuContentModifier: ViewModifier {
     func body(content: Content) -> some View {
         content.background {
-            QuotaViewMenuContentBackground()
+            CodexQuotaViewMenuContentBackground()
         }
     }
 }
 
-private enum QuotaViewReadabilityRole {
+private enum CodexQuotaViewReadabilityRole {
     case primary
     case secondary
     case tertiary
@@ -195,8 +195,8 @@ private enum QuotaViewReadabilityRole {
     }
 }
 
-private struct QuotaViewReadableForegroundModifier: ViewModifier {
-    let role: QuotaViewReadabilityRole
+private struct CodexQuotaViewReadableForegroundModifier: ViewModifier {
+    let role: CodexQuotaViewReadabilityRole
 
     func body(content: Content) -> some View {
         // System label colors participate in macOS vibrancy and respond to
@@ -206,7 +206,7 @@ private struct QuotaViewReadableForegroundModifier: ViewModifier {
     }
 }
 
-private struct QuotaViewColoredForegroundModifier: ViewModifier {
+private struct CodexQuotaViewColoredForegroundModifier: ViewModifier {
     let color: Color
 
     func body(content: Content) -> some View {
@@ -214,13 +214,13 @@ private struct QuotaViewColoredForegroundModifier: ViewModifier {
     }
 }
 
-private struct QuotaViewSeparatorModifier: ViewModifier {
+private struct CodexQuotaViewSeparatorModifier: ViewModifier {
     func body(content: Content) -> some View {
         content.overlay(Color(nsColor: .separatorColor))
     }
 }
 
-enum QuotaViewButtonInteractionKind: Equatable {
+enum CodexQuotaViewButtonInteractionKind: Equatable {
     case compact
     case regular
     case reset
@@ -239,11 +239,11 @@ enum QuotaViewButtonInteractionKind: Equatable {
     }
 }
 
-private struct QuotaViewInteractiveButtonStyle: ButtonStyle {
-    let kind: QuotaViewButtonInteractionKind
+private struct CodexQuotaViewInteractiveButtonStyle: ButtonStyle {
+    let kind: CodexQuotaViewButtonInteractionKind
 
     func makeBody(configuration: Configuration) -> some View {
-        QuotaViewInteractiveButtonBody(
+        CodexQuotaViewInteractiveButtonBody(
             label: configuration.label,
             isPressed: configuration.isPressed,
             kind: kind
@@ -251,14 +251,14 @@ private struct QuotaViewInteractiveButtonStyle: ButtonStyle {
     }
 }
 
-private struct QuotaViewInteractiveButtonBody<Label: View>: View {
+private struct CodexQuotaViewInteractiveButtonBody<Label: View>: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.isEnabled) private var isEnabled
 
     let label: Label
     let isPressed: Bool
-    let kind: QuotaViewButtonInteractionKind
+    let kind: CodexQuotaViewButtonInteractionKind
 
     @State private var isHovering = false
 
@@ -384,41 +384,41 @@ private struct CodexGlassModifier: ViewModifier {
 
 extension View {
     func quotaViewInteractiveButton(
-        _ kind: QuotaViewButtonInteractionKind = .regular
+        _ kind: CodexQuotaViewButtonInteractionKind = .regular
     ) -> some View {
         buttonStyle(
-            QuotaViewInteractiveButtonStyle(kind: kind)
+            CodexQuotaViewInteractiveButtonStyle(kind: kind)
         )
     }
 
     func quotaViewMenuContentSurface() -> some View {
-        modifier(QuotaViewMenuContentModifier())
+        modifier(CodexQuotaViewMenuContentModifier())
     }
 
     func quotaViewPrimaryText() -> some View {
         modifier(
-            QuotaViewReadableForegroundModifier(role: .primary)
+            CodexQuotaViewReadableForegroundModifier(role: .primary)
         )
     }
 
     func quotaViewSecondaryText() -> some View {
         modifier(
-            QuotaViewReadableForegroundModifier(role: .secondary)
+            CodexQuotaViewReadableForegroundModifier(role: .secondary)
         )
     }
 
     func quotaViewTertiaryText() -> some View {
         modifier(
-            QuotaViewReadableForegroundModifier(role: .tertiary)
+            CodexQuotaViewReadableForegroundModifier(role: .tertiary)
         )
     }
 
     func quotaViewColoredForeground(_ color: Color) -> some View {
-        modifier(QuotaViewColoredForegroundModifier(color: color))
+        modifier(CodexQuotaViewColoredForegroundModifier(color: color))
     }
 
     func quotaViewSeparator() -> some View {
-        modifier(QuotaViewSeparatorModifier())
+        modifier(CodexQuotaViewSeparatorModifier())
     }
 
     func codexGlass(
@@ -482,14 +482,14 @@ extension View {
     func quotaViewWindowSurface() -> some View {
         if #available(macOS 26.0, *) {
             self.background {
-                QuotaViewAmbientBackground()
+                CodexQuotaViewAmbientBackground()
                     .ignoresSafeArea()
             }
         } else {
             self
                 .background(.regularMaterial)
                 .background {
-                    QuotaViewAmbientBackground()
+                    CodexQuotaViewAmbientBackground()
                         .ignoresSafeArea()
                 }
         }

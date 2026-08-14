@@ -1,5 +1,5 @@
 import Foundation
-import QuotaViewCore
+import CodexQuotaViewCore
 
 struct DailyTokenActivity: Equatable, Sendable, Identifiable {
     let date: Date

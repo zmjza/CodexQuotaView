@@ -2,7 +2,7 @@ import AppKit
 import CoreText
 import MetalKit
 import QuartzCore
-import QuotaViewCore
+import CodexQuotaViewCore
 import simd
 
 struct CodexActivityRenderState: Equatable {

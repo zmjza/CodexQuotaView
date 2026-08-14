@@ -1,7 +1,7 @@
 #include "Shared.xcconfig"
 
-PRODUCT_NAME = QuotaViewCore
-PRODUCT_BUNDLE_IDENTIFIER = com.quotaview.core
+PRODUCT_NAME = CodexQuotaViewCore
+PRODUCT_BUNDLE_IDENTIFIER = com.zmjza.codexquotaview.core
 DEFINES_MODULE = YES
 SKIP_INSTALL = YES
 BUILD_LIBRARY_FOR_DISTRIBUTION = NO

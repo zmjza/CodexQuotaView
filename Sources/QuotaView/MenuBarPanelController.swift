@@ -32,8 +32,8 @@ enum MenuBarPanelGeometry {
 @MainActor
 final class MenuBarPanelController: NSObject {
     private enum Metrics {
-        static let contentWidth = QuotaViewFigmaMenu.designSize.width
-        static let fallbackHeight = QuotaViewFigmaMenu.designSize.height
+        static let contentWidth = CodexQuotaViewFigmaMenu.designSize.width
+        static let fallbackHeight = CodexQuotaViewFigmaMenu.designSize.height
         static let screenEdgeInset: CGFloat = 8
         static let menuBarGap: CGFloat = 6
     }
@@ -44,7 +44,7 @@ final class MenuBarPanelController: NSObject {
     private let updateController: AppUpdateController
 
     private var statusItem: NSStatusItem?
-    private var panel: QuotaViewMenuPanel?
+    private var panel: CodexQuotaViewMenuPanel?
     private var hostingView: NSView?
     private var surfaceView: NSView?
     private var settingsWindowController: NSWindowController?
@@ -60,7 +60,7 @@ final class MenuBarPanelController: NSObject {
     private var panelAnchor: PanelAnchor?
     private var isPresentingConfirmation = false
     private var glassSurfaceRequiresVisibleAttachment = true
-    private var pendingGlassMode: QuotaViewGlassMode?
+    private var pendingGlassMode: CodexQuotaViewGlassMode?
 
     private struct PanelAnchor {
         let screen: NSScreen
@@ -103,7 +103,7 @@ final class MenuBarPanelController: NSObject {
         let item = NSStatusBar.system.statusItem(
             withLength: NSStatusItem.variableLength
         )
-        item.autosaveName = "QuotaView.StatusItem"
+        item.autosaveName = "CodexQuotaView.StatusItem"
 
         if let button = item.button {
             button.target = self
@@ -113,14 +113,14 @@ final class MenuBarPanelController: NSObject {
                 ofSize: NSFont.systemFontSize,
                 weight: .semibold
             )
-            button.toolTip = "QuotaView"
+            button.toolTip = "CodexQuotaView"
         }
 
         statusItem = item
     }
 
     private func configurePanel() {
-        let panel = QuotaViewMenuPanel(
+        let panel = CodexQuotaViewMenuPanel(
             contentRect: NSRect(
                 x: 0,
                 y: 0,
@@ -195,15 +195,15 @@ final class MenuBarPanelController: NSObject {
 
     private func makePanelSurface(
         hosting: NSView,
-        mode: QuotaViewGlassMode
+        mode: CodexQuotaViewGlassMode
     ) -> NSView {
         if #available(macOS 26.0, *) {
-            return QuotaViewLiquidGlassSurface(
+            return CodexQuotaViewLiquidGlassSurface(
                 contentView: hosting,
                 mode: mode
             )
         }
-        return QuotaViewLegacyGlassSurface(
+        return CodexQuotaViewLegacyGlassSurface(
             contentView: hosting,
             mode: mode
         )
@@ -323,7 +323,7 @@ final class MenuBarPanelController: NSObject {
     }
 
     private func requestGlassSurfaceUpdate(
-        for mode: QuotaViewGlassMode
+        for mode: CodexQuotaViewGlassMode
     ) {
         pendingGlassMode = mode
         glassSurfaceRequiresVisibleAttachment = true
@@ -334,7 +334,7 @@ final class MenuBarPanelController: NSObject {
     }
 
     private func updateGlassSurface(
-        to requestedMode: QuotaViewGlassMode? = nil,
+        to requestedMode: CodexQuotaViewGlassMode? = nil,
         force: Bool = false
     ) {
         guard let panel, let hostingView else { return }
@@ -363,7 +363,7 @@ final class MenuBarPanelController: NSObject {
         }
 
         if #available(macOS 26.0, *),
-           let liquidGlass = surfaceView as? QuotaViewLiquidGlassSurface {
+           let liquidGlass = surfaceView as? CodexQuotaViewLiquidGlassSurface {
             liquidGlass.contentView = nil
         } else {
             hostingView.removeFromSuperview()
@@ -388,12 +388,12 @@ final class MenuBarPanelController: NSObject {
         prepareGlassSurfaceForDisplay()
     }
 
-    private var currentGlassMode: QuotaViewGlassMode? {
+    private var currentGlassMode: CodexQuotaViewGlassMode? {
         if #available(macOS 26.0, *),
-           let glass = surfaceView as? QuotaViewLiquidGlassSurface {
+           let glass = surfaceView as? CodexQuotaViewLiquidGlassSurface {
             return glass.mode
         }
-        return (surfaceView as? QuotaViewLegacyGlassSurface)?.mode
+        return (surfaceView as? CodexQuotaViewLegacyGlassSurface)?.mode
     }
 
     private func prepareGlassSurfaceForDisplay() {
@@ -646,7 +646,7 @@ final class MenuBarPanelController: NSObject {
 
     private var currentSurfaceInsets: NSEdgeInsets {
         if #available(macOS 26.0, *),
-           let surface = surfaceView as? QuotaViewLiquidGlassSurface {
+           let surface = surfaceView as? CodexQuotaViewLiquidGlassSurface {
             return surface.panelInsets
         }
         return NSEdgeInsets()
@@ -654,12 +654,12 @@ final class MenuBarPanelController: NSObject {
 
     private func setHostedContentHeight(_ height: CGFloat) {
         if #available(macOS 26.0, *),
-           let surface = surfaceView as? QuotaViewLiquidGlassSurface {
+           let surface = surfaceView as? CodexQuotaViewLiquidGlassSurface {
             surface.setHostedContentHeight(height)
             return
         }
 
-        (surfaceView as? QuotaViewLegacyGlassSurface)?
+        (surfaceView as? CodexQuotaViewLegacyGlassSurface)?
             .setHostedContentHeight(height)
     }
 
@@ -722,7 +722,7 @@ final class MenuBarPanelController: NSObject {
             settingsWindowController.showWindow(nil)
             settingsWindowController.window?.makeKeyAndOrderFront(nil)
         } else {
-            let rootView = QuotaViewSettingsWindowRoot(
+            let rootView = CodexQuotaViewSettingsWindowRoot(
                 store: store,
                 preferences: preferences,
                 activityRuntime: activityRuntime,
@@ -735,8 +735,8 @@ final class MenuBarPanelController: NSObject {
                 contentViewController: hostingController
             )
             window.title = preferences.copy.text(
-                "QuotaView 设置",
-                "QuotaView Settings"
+                "CodexQuotaView 设置",
+                "CodexQuotaView Settings"
             )
             window.styleMask = [
                 .titled,
@@ -797,7 +797,7 @@ private struct MenuBarPanelRoot: View {
     }
 }
 
-private struct QuotaViewSettingsWindowRoot: View {
+private struct CodexQuotaViewSettingsWindowRoot: View {
     @ObservedObject var store: CodexStatusStore
     @ObservedObject var preferences: AppPreferences
     @ObservedObject var activityRuntime: CodexActivityRuntime
@@ -814,18 +814,18 @@ private struct QuotaViewSettingsWindowRoot: View {
     }
 }
 
-private final class QuotaViewMenuPanel: NSPanel {
+private final class CodexQuotaViewMenuPanel: NSPanel {
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { false }
 }
 
 @available(macOS 26.0, *)
-private final class QuotaViewLiquidGlassSurface: NSView {
-    let mode: QuotaViewGlassMode
+private final class CodexQuotaViewLiquidGlassSurface: NSView {
+    let mode: CodexQuotaViewGlassMode
 
     private let glassView = NSGlassEffectView()
-    private let compositionView: QuotaViewGlassCompositionView
-    private let dropShadowView: QuotaViewFigmaDropShadowView?
+    private let compositionView: CodexQuotaViewGlassCompositionView
+    private let dropShadowView: CodexQuotaViewFigmaDropShadowView?
 
     var panelInsets: NSEdgeInsets {
         mode == .clear
@@ -844,15 +844,15 @@ private final class QuotaViewLiquidGlassSurface: NSView {
 
     init(
         contentView: NSView,
-        mode: QuotaViewGlassMode
+        mode: CodexQuotaViewGlassMode
     ) {
         self.mode = mode
-        compositionView = QuotaViewGlassCompositionView(
+        compositionView = CodexQuotaViewGlassCompositionView(
             contentView: contentView,
             usesFigmaChrome: mode == .clear
         )
         dropShadowView = mode == .clear
-            ? QuotaViewFigmaDropShadowView()
+            ? CodexQuotaViewFigmaDropShadowView()
             : nil
         super.init(frame: .zero)
         wantsLayer = true
@@ -897,7 +897,7 @@ private final class QuotaViewLiquidGlassSurface: NSView {
 }
 
 private enum FigmaClearGlassSpec {
-    // QuotaView Page UI node 1:712 is the production overview size:
+    // CodexQuotaView Page UI node 1:712 is the production overview size:
     // 274 × 433 pt. Its values map one-to-one to AppKit points.
     static let cornerRadius: CGFloat = 21
     static let darkFillOpacity: CGFloat = 0.20
@@ -944,9 +944,9 @@ private enum FigmaClearGlassSpec {
     static let splay: CGFloat = 0.12
 }
 
-private final class QuotaViewGlassCompositionView: NSView {
-    private let backdropBlurView: QuotaViewBackdropBlurView?
-    private let chromeView: QuotaViewFigmaGlassChromeView?
+private final class CodexQuotaViewGlassCompositionView: NSView {
+    private let backdropBlurView: CodexQuotaViewBackdropBlurView?
+    private let chromeView: CodexQuotaViewFigmaGlassChromeView?
     private(set) var hostedContentView: NSView?
     private var hostedContentHeight: CGFloat?
 
@@ -957,12 +957,12 @@ private final class QuotaViewGlassCompositionView: NSView {
         usesFigmaChrome: Bool
     ) {
         backdropBlurView = usesFigmaChrome
-            ? QuotaViewBackdropBlurView(
+            ? CodexQuotaViewBackdropBlurView(
                 cornerRadius: FigmaClearGlassSpec.cornerRadius
             )
             : nil
         chromeView = usesFigmaChrome
-            ? QuotaViewFigmaGlassChromeView()
+            ? CodexQuotaViewFigmaGlassChromeView()
             : nil
         hostedContentView = contentView
         super.init(frame: .zero)
@@ -1019,7 +1019,7 @@ private final class QuotaViewGlassCompositionView: NSView {
     }
 }
 
-private final class QuotaViewBackdropBlurView: NSView {
+private final class CodexQuotaViewBackdropBlurView: NSView {
     private let cornerRadius: CGFloat
     private let materialView = NSVisualEffectView()
 
@@ -1059,7 +1059,7 @@ private final class QuotaViewBackdropBlurView: NSView {
     }
 }
 
-private final class QuotaViewFigmaGlassChromeView: NSView {
+private final class CodexQuotaViewFigmaGlassChromeView: NSView {
     override var isOpaque: Bool { false }
     override var isFlipped: Bool { true }
 
@@ -1146,7 +1146,7 @@ private final class QuotaViewFigmaGlassChromeView: NSView {
     }
 }
 
-private final class QuotaViewFigmaDropShadowView: NSView {
+private final class CodexQuotaViewFigmaDropShadowView: NSView {
     var glassFrame: NSRect = .zero {
         didSet {
             if glassFrame != oldValue {
@@ -1195,21 +1195,21 @@ private final class QuotaViewFigmaDropShadowView: NSView {
     }
 }
 
-private final class QuotaViewLegacyGlassSurface: NSVisualEffectView {
-    let mode: QuotaViewGlassMode
+private final class CodexQuotaViewLegacyGlassSurface: NSVisualEffectView {
+    let mode: CodexQuotaViewGlassMode
 
-    private let backdropBlurView: QuotaViewBackdropBlurView?
+    private let backdropBlurView: CodexQuotaViewBackdropBlurView?
     private let hostedContentView: NSView
     private var hostedContentHeight: CGFloat?
 
     init(
         contentView: NSView,
-        mode: QuotaViewGlassMode
+        mode: CodexQuotaViewGlassMode
     ) {
         self.mode = mode
         hostedContentView = contentView
         backdropBlurView = mode == .clear
-            ? QuotaViewBackdropBlurView(
+            ? CodexQuotaViewBackdropBlurView(
                 cornerRadius: FigmaClearGlassSpec.cornerRadius
             )
             : nil

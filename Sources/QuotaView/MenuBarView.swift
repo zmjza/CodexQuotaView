@@ -44,7 +44,7 @@ struct MenuBarView: View {
             Group {
                 switch route {
                 case .overview:
-                    QuotaViewFigmaMenu(
+                    CodexQuotaViewFigmaMenu(
                         store: store,
                         preferences: preferences,
                         copy: copy,
@@ -56,7 +56,7 @@ struct MenuBarView: View {
                         quitAction: quit
                     )
                 case .resetDetails:
-                    QuotaViewFigmaResetMenu(
+                    CodexQuotaViewFigmaResetMenu(
                         store: store,
                         copy: copy,
                         returnAction: returnToOverview,

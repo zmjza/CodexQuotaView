@@ -6,7 +6,7 @@
     <true/>
     <key>com.apple.security.application-groups</key>
     <array>
-        <string>BUUH229D5Q.com.quotaview.shared</string>
+        <string>TEAMID.com.zmjza.codexquotaview.shared</string>
     </array>
 </dict>
 </plist>

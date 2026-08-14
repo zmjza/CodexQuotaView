@@ -5,7 +5,7 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>CFBundleDisplayName</key>
-    <string>QuotaView</string>
+    <string>CodexQuotaView</string>
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
     <key>CFBundleIdentifier</key>
@@ -27,7 +27,7 @@
         <key>NSExtensionPointIdentifier</key>
         <string>com.apple.widgetkit-extension</string>
     </dict>
-    <key>QuotaViewAppGroupIdentifier</key>
-    <string>$(QUOTAVIEW_APP_GROUP_ID)</string>
+    <key>CodexQuotaViewAppGroupIdentifier</key>
+    <string>$(CODEXQUOTAVIEW_APP_GROUP_ID)</string>
 </dict>
 </plist>

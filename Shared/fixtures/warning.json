@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-08-14T08:30:00Z",
+  "availability": "available",
+  "serviceHealth": "warning",
+  "plan": "plus",
+  "primaryWindow": {
+    "id": "codex.primary",
+    "usedPercent": 82,
+    "remainingPercent": 18,
+    "resetsAt": "2026-08-14T10:00:00Z",
+    "durationMinutes": 300,
+    "risk": "warning"
+  },
+  "sparkWindow": null,
+  "creditBalance": "0.00",
+  "hasCredits": false,
+  "unlimitedCredits": false,
+  "resetCredits": 0,
+  "recentDailyTokens": 2097152,
+  "tokens30d": 16777216,
+  "lifetimeTokens": 100663296,
+  "estimatedCost30d": "8.75",
+  "dailyActivity": [],
+  "sanitizedError": null
+}

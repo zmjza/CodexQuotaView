@@ -3,8 +3,8 @@ import SwiftUI
 
 @main
 @MainActor
-struct QuotaViewApp: App {
-    @NSApplicationDelegateAdaptor(QuotaViewAppDelegate.self)
+struct CodexQuotaViewApp: App {
+    @NSApplicationDelegateAdaptor(CodexQuotaViewAppDelegate.self)
     private var appDelegate
 
     var body: some Scene {
@@ -21,7 +21,7 @@ struct QuotaViewApp: App {
 }
 
 @MainActor
-final class QuotaViewAppDelegate: NSObject, NSApplicationDelegate {
+final class CodexQuotaViewAppDelegate: NSObject, NSApplicationDelegate {
     let store: CodexStatusStore
     let preferences: AppPreferences
     let activityRuntime: CodexActivityRuntime

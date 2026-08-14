@@ -6,3 +6,6 @@ xcuserdata/
 *.xcuserstate
 dist/
 .DS_Store
+Windows/**/bin/
+Windows/**/obj/
+Windows/src/CodexQuotaView.Rendering.Native/x64/

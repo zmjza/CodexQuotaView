@@ -4,23 +4,23 @@ set -euo pipefail
 
 script_dir="${0:A:h}"
 project_dir="${script_dir:h}"
-project_file="${project_dir}/QuotaView.xcodeproj"
-scheme="QuotaView"
+project_file="${project_dir}/CodexQuotaView.xcodeproj"
+scheme="CodexQuotaView"
 configuration="Release"
 dist_dir="${project_dir}/dist"
 info_plist="${project_dir}/Support/Info.plist"
-app_entitlements="${project_dir}/Support/QuotaView.entitlements"
-widget_entitlements="${project_dir}/Support/QuotaViewWidget.entitlements"
+app_entitlements="${project_dir}/Support/CodexQuotaView.entitlements"
+widget_entitlements="${project_dir}/Support/CodexQuotaViewWidget.entitlements"
 version="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "${info_plist}")"
 build_number="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "${info_plist}")"
 app_group_identifier="$(
     /usr/libexec/PlistBuddy \
-        -c 'Print :QuotaViewAppGroupIdentifier' \
+        -c 'Print :CodexQuotaViewAppGroupIdentifier' \
         "${info_plist}"
 )"
 update_team_identifier="$(
     /usr/libexec/PlistBuddy \
-        -c 'Print :QuotaViewUpdateTeamIdentifier' \
+        -c 'Print :CodexQuotaViewUpdateTeamIdentifier' \
         "${info_plist}"
 )"
 sparkle_feed_url="$(
@@ -34,29 +34,29 @@ sparkle_public_key="$(
         "${info_plist}"
 )"
 if [[ "${build_number}" == "1" ]]; then
-    release_name="QuotaView-v${version}"
+    release_name="CodexQuotaView-v${version}"
 else
-    release_name="QuotaView-v${version}-build.${build_number}"
+    release_name="CodexQuotaView-v${version}-build.${build_number}"
 fi
 staging_dir="$(mktemp -d "/tmp/quotaview-package.XXXXXX")"
 verification_dir="$(mktemp -d "/tmp/quotaview-verify.XXXXXX")"
 derived_data="${staging_dir}/DerivedData"
-built_app="${derived_data}/Build/Products/${configuration}/QuotaView.app"
-staging_app="${staging_dir}/QuotaView.app"
-widget_extension="${staging_app}/Contents/PlugIns/QuotaViewWidgetExtension.appex"
-activity_helper="${staging_app}/Contents/Helpers/QuotaViewActivityHook"
+built_app="${derived_data}/Build/Products/${configuration}/CodexQuotaView.app"
+staging_app="${staging_dir}/CodexQuotaView.app"
+widget_extension="${staging_app}/Contents/PlugIns/CodexQuotaViewWidgetExtension.appex"
+activity_helper="${staging_app}/Contents/Helpers/CodexQuotaViewActivityHook"
 sparkle_framework="${staging_app}/Contents/Frameworks/Sparkle.framework"
 sparkle_version_dir="${sparkle_framework}/Versions/B"
 sparkle_installer_xpc="${sparkle_version_dir}/XPCServices/Installer.xpc"
 sparkle_downloader_xpc="${sparkle_version_dir}/XPCServices/Downloader.xpc"
 sparkle_autoupdate="${sparkle_version_dir}/Autoupdate"
 sparkle_updater_app="${sparkle_version_dir}/Updater.app"
-destination_app="${dist_dir}/QuotaView.app"
+destination_app="${dist_dir}/CodexQuotaView.app"
 staging_zip="${staging_dir}/${release_name}.zip"
 destination_zip="${dist_dir}/${release_name}.zip"
 signing_identity="${CODESIGN_IDENTITY:-}"
 notary_profile="${NOTARY_PROFILE:-}"
-sparkle_key_account="${SPARKLE_KEY_ACCOUNT:-com.quotaview.menubar}"
+sparkle_key_account="${SPARKLE_KEY_ACCOUNT:-com.zmjza.codexquotaview.menubar}"
 
 if [[ -z "${signing_identity}" ]]; then
     identity_inventory="$(security find-identity -v -p codesigning)"
@@ -271,7 +271,7 @@ widget_extension_point="$(
 )"
 built_update_team_identifier="$(
     /usr/libexec/PlistBuddy \
-        -c 'Print :QuotaViewUpdateTeamIdentifier' \
+        -c 'Print :CodexQuotaViewUpdateTeamIdentifier' \
         "${staging_app}/Contents/Info.plist"
 )"
 built_sparkle_feed_url="$(
@@ -322,7 +322,7 @@ if [[ "${widget_version}" != "${version}" ]] \
 fi
 
 if [[ "${widget_bundle_identifier}" \
-        != "com.quotaview.menubar.widget" ]]; then
+        != "com.zmjza.codexquotaview.menubar.widget" ]]; then
     print -u2 \
         "Unexpected widget bundle identifier: ${widget_bundle_identifier}"
     exit 4
@@ -355,11 +355,11 @@ for resource in AppIcon.icns Assets.car; do
 done
 
 architectures="$(
-    lipo -archs "${staging_app}/Contents/MacOS/QuotaView"
+    lipo -archs "${staging_app}/Contents/MacOS/CodexQuotaView"
 )"
 widget_architectures="$(
     lipo -archs \
-        "${widget_extension}/Contents/MacOS/QuotaViewWidgetExtension"
+        "${widget_extension}/Contents/MacOS/CodexQuotaViewWidgetExtension"
 )"
 helper_architectures="$(
     lipo -archs "${activity_helper}"
@@ -445,7 +445,7 @@ if [[ "${app_entitlement_details}" \
     exit 4
 fi
 
-if [[ "${app_group_identifier}" != "BUUH229D5Q."* ]] \
+if [[ "${app_group_identifier}" != "TEAMID."* ]] \
     && [[ ! -f "${staging_app}/Contents/embedded.provisionprofile" ]]; then
     print -u2 \
         "Notarized direct distribution requires a team-prefixed App Group " \
@@ -484,13 +484,13 @@ codesign \
     --deep \
     --strict \
     --verbose=4 \
-    "${verification_dir}/QuotaView.app"
+    "${verification_dir}/CodexQuotaView.app"
 staging_zip_sha256="$(
     shasum -a 256 "${staging_zip}" | awk '{print $1}'
 )"
 
 if [[ -d "${destination_app}" ]]; then
-    previous_app="${dist_dir}/QuotaView.previous.$(date +%Y%m%d%H%M%S).app"
+    previous_app="${dist_dir}/CodexQuotaView.previous.$(date +%Y%m%d%H%M%S).app"
     mv "${destination_app}" "${previous_app}"
 fi
 

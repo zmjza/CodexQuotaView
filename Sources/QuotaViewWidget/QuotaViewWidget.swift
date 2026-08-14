@@ -17,17 +17,17 @@ private extension View {
     }
 }
 
-struct QuotaViewWidgetEntry: TimelineEntry {
+struct CodexQuotaViewWidgetEntry: TimelineEntry {
     let date: Date
-    let snapshot: QuotaViewWidgetSnapshot?
+    let snapshot: CodexQuotaViewWidgetSnapshot?
     let isPlaceholder: Bool
 }
 
-struct QuotaViewWidgetProvider: TimelineProvider {
+struct CodexQuotaViewWidgetProvider: TimelineProvider {
     func placeholder(
         in context: Context
-    ) -> QuotaViewWidgetEntry {
-        QuotaViewWidgetEntry(
+    ) -> CodexQuotaViewWidgetEntry {
+        CodexQuotaViewWidgetEntry(
             date: Date(),
             snapshot: nil,
             isPlaceholder: true
@@ -36,7 +36,7 @@ struct QuotaViewWidgetProvider: TimelineProvider {
 
     func getSnapshot(
         in context: Context,
-        completion: @escaping (QuotaViewWidgetEntry) -> Void
+        completion: @escaping (CodexQuotaViewWidgetEntry) -> Void
     ) {
         if context.isPreview {
             completion(placeholder(in: context))
@@ -47,15 +47,15 @@ struct QuotaViewWidgetProvider: TimelineProvider {
 
     func getTimeline(
         in context: Context,
-        completion: @escaping (Timeline<QuotaViewWidgetEntry>) -> Void
+        completion: @escaping (Timeline<CodexQuotaViewWidgetEntry>) -> Void
     ) {
         let now = Date()
         let entry = loadEntry(now: now)
         let earliestReload = now.addingTimeInterval(
-            QuotaViewWidgetConfiguration.minimumTimelineReloadInterval
+            CodexQuotaViewWidgetConfiguration.minimumTimelineReloadInterval
         )
         let latestReload = now.addingTimeInterval(
-            QuotaViewWidgetConfiguration.snapshotLifetime
+            CodexQuotaViewWidgetConfiguration.snapshotLifetime
         )
         let snapshotExpiry = entry.snapshot?.expiresAt ?? latestReload
         let reloadDate = min(
@@ -71,11 +71,11 @@ struct QuotaViewWidgetProvider: TimelineProvider {
         )
     }
 
-    private func loadEntry(now: Date) -> QuotaViewWidgetEntry {
+    private func loadEntry(now: Date) -> CodexQuotaViewWidgetEntry {
         let appGroupIdentifier = Bundle.main.object(
-            forInfoDictionaryKey: "QuotaViewAppGroupIdentifier"
+            forInfoDictionaryKey: "CodexQuotaViewAppGroupIdentifier"
         ) as? String
-            ?? QuotaViewWidgetConfiguration.defaultAppGroupIdentifier
+            ?? CodexQuotaViewWidgetConfiguration.defaultAppGroupIdentifier
         guard !appGroupIdentifier.isEmpty,
               let containerURL = FileManager.default.containerURL(
                 forSecurityApplicationGroupIdentifier:
@@ -85,14 +85,14 @@ struct QuotaViewWidgetProvider: TimelineProvider {
                 containerURL: containerURL
               ).read(now: now)
         else {
-            return QuotaViewWidgetEntry(
+            return CodexQuotaViewWidgetEntry(
                 date: now,
                 snapshot: nil,
                 isPlaceholder: false
             )
         }
 
-        return QuotaViewWidgetEntry(
+        return CodexQuotaViewWidgetEntry(
             date: now,
             snapshot: snapshot,
             isPlaceholder: false
@@ -100,13 +100,13 @@ struct QuotaViewWidgetProvider: TimelineProvider {
     }
 }
 
-struct QuotaViewWidgetView: View {
+struct CodexQuotaViewWidgetView: View {
     @Environment(\.accessibilityReduceMotion)
     private var reduceMotion
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.widgetFamily) private var family
 
-    let entry: QuotaViewWidgetEntry
+    let entry: CodexQuotaViewWidgetEntry
 
     private var copy: WidgetCopy {
         WidgetCopy(
@@ -257,7 +257,7 @@ struct QuotaViewWidgetView: View {
                 .resizable()
                 .frame(width: 10.875, height: 12)
                 .accessibilityHidden(true)
-            Text("QuotaView")
+            Text("CodexQuotaView")
                 .font(AstaSans.semiBold(12))
                 .tracking(-0.12)
                 .foregroundStyle(palette.primaryText)
@@ -675,14 +675,14 @@ private struct WidgetPalette {
 
     var logoAssetName: String {
         isDark
-            ? "QuotaViewWidgetLogoOnDark"
-            : "QuotaViewWidgetLogoOnLight"
+            ? "CodexQuotaViewWidgetLogoOnDark"
+            : "CodexQuotaViewWidgetLogoOnLight"
     }
 
     var clockAssetName: String {
         isDark
-            ? "QuotaViewWidgetClockOnDark"
-            : "QuotaViewWidgetClockOnLight"
+            ? "CodexQuotaViewWidgetClockOnDark"
+            : "CodexQuotaViewWidgetClockOnLight"
     }
 
     func quotaColor(_ remainingFraction: Double) -> Color {
@@ -760,8 +760,8 @@ private struct WidgetCopy {
 
     var unavailableAccessibility: String {
         text(
-            "QuotaView，Codex 数据连接不可用，额度数据不可用，请在 QuotaView 中刷新",
-            "QuotaView, Codex data connection unavailable, quota data unavailable, refresh in QuotaView"
+            "CodexQuotaView，Codex 数据连接不可用，额度数据不可用，请在 CodexQuotaView 中刷新",
+            "CodexQuotaView, Codex data connection unavailable, quota data unavailable, refresh in CodexQuotaView"
         )
     }
 
@@ -805,8 +805,8 @@ private struct WidgetCopy {
         lifetimeTokens: String
     ) -> String {
         text(
-            "QuotaView，Codex 数据连接可用，本周期剩余 \(remainingPercent)%，下次重置 \(resetText)，Credits 余额 \(creditsBalance)，今日 Tokens \(todayTokens)，累计 Tokens \(lifetimeTokens)",
-            "QuotaView, Codex data connection available, \(remainingPercent) percent remaining in the current period, next reset \(resetText), credits balance \(creditsBalance), today tokens \(todayTokens), lifetime tokens \(lifetimeTokens)"
+            "CodexQuotaView，Codex 数据连接可用，本周期剩余 \(remainingPercent)%，下次重置 \(resetText)，Credits 余额 \(creditsBalance)，今日 Tokens \(todayTokens)，累计 Tokens \(lifetimeTokens)",
+            "CodexQuotaView, Codex data connection available, \(remainingPercent) percent remaining in the current period, next reset \(resetText), credits balance \(creditsBalance), today tokens \(todayTokens), lifetime tokens \(lifetimeTokens)"
         )
     }
 
@@ -819,19 +819,19 @@ private struct WidgetCopy {
 }
 
 @main
-struct QuotaViewUsageWidget: Widget {
+struct CodexQuotaViewUsageWidget: Widget {
     init() {
         AstaSansFontRegistrar.registerBundledFonts()
     }
 
     var body: some WidgetConfiguration {
         StaticConfiguration(
-            kind: QuotaViewWidgetConfiguration.kind,
-            provider: QuotaViewWidgetProvider()
+            kind: CodexQuotaViewWidgetConfiguration.kind,
+            provider: CodexQuotaViewWidgetProvider()
         ) { entry in
-            QuotaViewWidgetView(entry: entry)
+            CodexQuotaViewWidgetView(entry: entry)
         }
-        .configurationDisplayName("QuotaView")
+        .configurationDisplayName("CodexQuotaView")
         .description("Codex quota status at a glance.")
         .supportedFamilies([.systemSmall, .systemMedium])
         .contentMarginsDisabled()

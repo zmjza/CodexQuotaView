@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A10000000000000000000001"
-               BuildableName = "QuotaView.app"
-               BlueprintName = "QuotaView"
-               ReferencedContainer = "container:QuotaView.xcodeproj">
+               BuildableName = "CodexQuotaView.app"
+               BlueprintName = "CodexQuotaView"
+               ReferencedContainer = "container:CodexQuotaView.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A10000000000000000000004"
-               BuildableName = "QuotaViewWidgetExtension.appex"
-               BlueprintName = "QuotaViewWidgetExtension"
-               ReferencedContainer = "container:QuotaView.xcodeproj">
+               BuildableName = "CodexQuotaViewWidgetExtension.appex"
+               BlueprintName = "CodexQuotaViewWidgetExtension"
+               ReferencedContainer = "container:CodexQuotaView.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A10000000000000000000003"
-               BuildableName = "QuotaViewTests.xctest"
-               BlueprintName = "QuotaViewTests"
-               ReferencedContainer = "container:QuotaView.xcodeproj">
+               BuildableName = "CodexQuotaViewTests.xctest"
+               BlueprintName = "CodexQuotaViewTests"
+               ReferencedContainer = "container:CodexQuotaView.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A10000000000000000000003"
-               BuildableName = "QuotaViewTests.xctest"
-               BlueprintName = "QuotaViewTests"
-               ReferencedContainer = "container:QuotaView.xcodeproj">
+               BuildableName = "CodexQuotaViewTests.xctest"
+               BlueprintName = "CodexQuotaViewTests"
+               ReferencedContainer = "container:CodexQuotaView.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -83,9 +83,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A10000000000000000000001"
-            BuildableName = "QuotaView.app"
-            BlueprintName = "QuotaView"
-            ReferencedContainer = "container:QuotaView.xcodeproj">
+            BuildableName = "CodexQuotaView.app"
+            BlueprintName = "CodexQuotaView"
+            ReferencedContainer = "container:CodexQuotaView.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -100,9 +100,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A10000000000000000000001"
-            BuildableName = "QuotaView.app"
-            BlueprintName = "QuotaView"
-            ReferencedContainer = "container:QuotaView.xcodeproj">
+            BuildableName = "CodexQuotaView.app"
+            BlueprintName = "CodexQuotaView"
+            ReferencedContainer = "container:CodexQuotaView.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

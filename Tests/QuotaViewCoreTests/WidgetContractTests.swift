@@ -1,12 +1,12 @@
 import Foundation
 import XCTest
-@testable import QuotaViewWidgetContract
+@testable import CodexQuotaViewWidgetContract
 
 final class WidgetContractTests: XCTestCase {
     func testDefaultAppGroupUsesDeveloperTeamPrefix() {
         XCTAssertEqual(
-            QuotaViewWidgetConfiguration.defaultAppGroupIdentifier,
-            "BUUH229D5Q.com.quotaview.shared"
+            CodexQuotaViewWidgetConfiguration.defaultAppGroupIdentifier,
+            "TEAMID.com.zmjza.codexquotaview.shared"
         )
     }
 
@@ -81,7 +81,7 @@ final class WidgetContractTests: XCTestCase {
             )
         }
 
-        let unknown = QuotaViewWidgetSnapshot(
+        let unknown = CodexQuotaViewWidgetSnapshot(
             schemaVersion: 99,
             generatedAt: now,
             expiresAt: now.addingTimeInterval(900),
@@ -116,8 +116,8 @@ final class WidgetContractTests: XCTestCase {
 
     private func makeSnapshot(
         now: Date
-    ) -> QuotaViewWidgetSnapshot {
-        QuotaViewWidgetSnapshot(
+    ) -> CodexQuotaViewWidgetSnapshot {
+        CodexQuotaViewWidgetSnapshot(
             generatedAt: now,
             expiresAt: now.addingTimeInterval(900),
             updatedAt: now,

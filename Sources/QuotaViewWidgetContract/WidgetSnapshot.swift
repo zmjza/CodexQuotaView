@@ -1,10 +1,10 @@
 import Foundation
 
-public enum QuotaViewWidgetConfiguration {
-    public static let kind = "QuotaViewUsageWidget"
+public enum CodexQuotaViewWidgetConfiguration {
+    public static let kind = "CodexQuotaViewUsageWidget"
     public static let defaultAppGroupIdentifier =
-        "BUUH229D5Q.com.quotaview.shared"
-    public static let snapshotFileName = "QuotaViewWidgetSnapshot.json"
+        "TEAMID.com.zmjza.codexquotaview.shared"
+    public static let snapshotFileName = "CodexQuotaViewWidgetSnapshot.json"
     public static let snapshotLifetime: TimeInterval = 15 * 60
     public static let minimumTimelineReloadInterval: TimeInterval = 5 * 60
 }
@@ -119,7 +119,7 @@ public struct ProviderWidgetPayload:
     }
 }
 
-public struct QuotaViewWidgetSnapshot:
+public struct CodexQuotaViewWidgetSnapshot:
     Codable, Equatable, Sendable {
     public static let currentSchemaVersion = 1
 
@@ -175,7 +175,7 @@ public struct WidgetSnapshotCodec: Sendable {
     }
 
     public func encode(
-        _ snapshot: QuotaViewWidgetSnapshot
+        _ snapshot: CodexQuotaViewWidgetSnapshot
     ) throws -> Data {
         try validate(snapshot, now: nil)
 
@@ -193,17 +193,17 @@ public struct WidgetSnapshotCodec: Sendable {
     public func decode(
         _ data: Data,
         now: Date
-    ) throws -> QuotaViewWidgetSnapshot {
+    ) throws -> CodexQuotaViewWidgetSnapshot {
         guard data.count <= maximumEncodedBytes else {
             throw WidgetSnapshotCodecError.tooLarge
         }
 
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .millisecondsSince1970
-        let snapshot: QuotaViewWidgetSnapshot
+        let snapshot: CodexQuotaViewWidgetSnapshot
         do {
             snapshot = try decoder.decode(
-                QuotaViewWidgetSnapshot.self,
+                CodexQuotaViewWidgetSnapshot.self,
                 from: data
             )
         } catch {
@@ -215,11 +215,11 @@ public struct WidgetSnapshotCodec: Sendable {
     }
 
     private func validate(
-        _ snapshot: QuotaViewWidgetSnapshot,
+        _ snapshot: CodexQuotaViewWidgetSnapshot,
         now: Date?
     ) throws {
         guard snapshot.schemaVersion
-                == QuotaViewWidgetSnapshot.currentSchemaVersion
+                == CodexQuotaViewWidgetSnapshot.currentSchemaVersion
         else {
             throw WidgetSnapshotCodecError.unsupportedSchema(
                 snapshot.schemaVersion
@@ -278,14 +278,14 @@ public struct WidgetSnapshotFileStore: Sendable {
         codec: WidgetSnapshotCodec = WidgetSnapshotCodec()
     ) {
         self.fileURL = containerURL.appendingPathComponent(
-            QuotaViewWidgetConfiguration.snapshotFileName,
+            CodexQuotaViewWidgetConfiguration.snapshotFileName,
             isDirectory: false
         )
         self.codec = codec
     }
 
     public func write(
-        _ snapshot: QuotaViewWidgetSnapshot
+        _ snapshot: CodexQuotaViewWidgetSnapshot
     ) throws {
         let data = try codec.encode(snapshot)
         try data.write(to: fileURL, options: .atomic)
@@ -293,7 +293,7 @@ public struct WidgetSnapshotFileStore: Sendable {
 
     public func read(
         now: Date
-    ) throws -> QuotaViewWidgetSnapshot {
+    ) throws -> CodexQuotaViewWidgetSnapshot {
         let data = try Data(contentsOf: fileURL)
         return try codec.decode(data, now: now)
     }

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-08-14T08:30:00Z",
+  "availability": "available",
+  "serviceHealth": "normal",
+  "plan": "pro",
+  "primaryWindow": {
+    "id": "codex.primary",
+    "usedPercent": 42,
+    "remainingPercent": 58,
+    "resetsAt": "2026-08-17T00:00:00Z",
+    "durationMinutes": 10080,
+    "risk": "normal"
+  },
+  "sparkWindow": {
+    "id": "codex.spark",
+    "usedPercent": 37,
+    "remainingPercent": 63,
+    "resetsAt": "2026-08-16T00:00:00Z",
+    "durationMinutes": 10080,
+    "risk": "normal"
+  },
+  "creditBalance": "12.50",
+  "hasCredits": true,
+  "unlimitedCredits": false,
+  "resetCredits": 2,
+  "recentDailyTokens": 1048576,
+  "tokens30d": 25165824,
+  "lifetimeTokens": 134217728,
+  "estimatedCost30d": "3.42",
+  "dailyActivity": [
+    { "date": "2026-08-13", "tokens": 1048576 },
+    { "date": "2026-08-14", "tokens": 524288 }
+  ],
+  "sanitizedError": null
+}

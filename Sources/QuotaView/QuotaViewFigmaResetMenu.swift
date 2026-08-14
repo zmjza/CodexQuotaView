@@ -1,9 +1,9 @@
 import AppKit
 import Foundation
-import QuotaViewCore
+import CodexQuotaViewCore
 import SwiftUI
 
-struct QuotaViewFigmaResetMenu: View {
+struct CodexQuotaViewFigmaResetMenu: View {
     nonisolated static let designSize = CGSize(width: 274, height: 473)
 
     @ObservedObject var store: CodexStatusStore
@@ -17,8 +17,8 @@ struct QuotaViewFigmaResetMenu: View {
     let openSettingsAction: () -> Void
 
     private enum Layout {
-        static let width = QuotaViewFigmaResetMenu.designSize.width
-        static let height = QuotaViewFigmaResetMenu.designSize.height
+        static let width = CodexQuotaViewFigmaResetMenu.designSize.width
+        static let height = CodexQuotaViewFigmaResetMenu.designSize.height
         static let headerHeight: CGFloat = 48
         static let heroHeight: CGFloat = 128
         static let detailsHeight: CGFloat = 249
@@ -73,7 +73,7 @@ struct QuotaViewFigmaResetMenu: View {
     private var header: some View {
         HStack(spacing: 6) {
             Button(action: returnAction) {
-                appearanceImage("QuotaViewFigmaBack")
+                appearanceImage("CodexQuotaViewFigmaBack")
                     .contentShape(Circle())
             }
             .quotaViewInteractiveButton(.compact)
@@ -186,8 +186,8 @@ struct QuotaViewFigmaResetMenu: View {
     private var resetCreditTicketIcon: some View {
         Image(
             isLightAppearance
-                ? "QuotaViewFigmaResetCreditsLight"
-                : "QuotaViewFigmaResetCredits"
+                ? "CodexQuotaViewFigmaResetCreditsLight"
+                : "CodexQuotaViewFigmaResetCredits"
         )
         .resizable()
         .interpolation(.high)
@@ -333,7 +333,7 @@ struct QuotaViewFigmaResetMenu: View {
         .quotaViewInteractiveButton(.reset)
         .background {
             ZStack {
-                QuotaViewFigmaDropShadow(
+                CodexQuotaViewFigmaDropShadow(
                     cornerRadius: Layout.resetButtonCornerRadius,
                     color: .red,
                     opacity: 0.16,
@@ -341,7 +341,7 @@ struct QuotaViewFigmaResetMenu: View {
                     offset: CGSize(width: 0, height: 4)
                 )
 
-                QuotaViewFigmaLocalGlass(
+                CodexQuotaViewFigmaLocalGlass(
                     frostRadius: 10.5,
                     cornerRadius: Layout.resetButtonCornerRadius,
                     tintColor: NSColor.red.withAlphaComponent(0.12)
@@ -411,7 +411,7 @@ struct QuotaViewFigmaResetMenu: View {
 
             HStack(spacing: 9) {
                 Button(action: refreshAction) {
-                    appearanceImage("QuotaViewFigmaSync")
+                    appearanceImage("CodexQuotaViewFigmaSync")
                         .contentShape(Circle())
                 }
                 .quotaViewInteractiveButton(.compact)
@@ -420,7 +420,7 @@ struct QuotaViewFigmaResetMenu: View {
                 .accessibilityLabel(copy.text("同步", "Sync"))
 
                 Button(action: openCodexAction) {
-                    appearanceImage("QuotaViewFigmaOpenCodex")
+                    appearanceImage("CodexQuotaViewFigmaOpenCodex")
                         .contentShape(Circle())
                 }
                 .quotaViewInteractiveButton(.compact)
@@ -430,7 +430,7 @@ struct QuotaViewFigmaResetMenu: View {
                 )
 
                 Button(action: openSettingsAction) {
-                    appearanceImage("QuotaViewFigmaSettings")
+                    appearanceImage("CodexQuotaViewFigmaSettings")
                         .contentShape(Circle())
                 }
                 .quotaViewInteractiveButton(.compact)

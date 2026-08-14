@@ -1,7 +1,7 @@
 import Foundation
-import QuotaViewWidgetContract
+import CodexQuotaViewWidgetContract
 import XCTest
-@testable import QuotaView
+@testable import CodexQuotaView
 
 @MainActor
 final class WidgetSnapshotWriterTests: XCTestCase {
@@ -12,7 +12,7 @@ final class WidgetSnapshotWriterTests: XCTestCase {
             now: now
         )
 
-        let snapshot = QuotaViewWidgetSnapshotProjector().makeSnapshot(
+        let snapshot = CodexQuotaViewWidgetSnapshotProjector().makeSnapshot(
             presentation: presentation,
             isAvailable: true,
             localeIdentifier: "zh-Hans",
@@ -65,7 +65,7 @@ final class WidgetSnapshotWriterTests: XCTestCase {
 
     func testProjectorDoesNotKeepProviderDataWhenUnavailable() {
         let now = Date(timeIntervalSince1970: 1_785_100_000)
-        let snapshot = QuotaViewWidgetSnapshotProjector().makeSnapshot(
+        let snapshot = CodexQuotaViewWidgetSnapshotProjector().makeSnapshot(
             presentation: makePresentation(
                 remainingPercent: 72,
                 now: now
@@ -83,7 +83,7 @@ final class WidgetSnapshotWriterTests: XCTestCase {
     func testProjectorUsesPlaceholdersForMissingOptionalMetrics()
         throws {
         let now = Date(timeIntervalSince1970: 1_785_100_000)
-        let snapshot = QuotaViewWidgetSnapshotProjector()
+        let snapshot = CodexQuotaViewWidgetSnapshotProjector()
             .makeSnapshot(
                 presentation: makePresentation(
                     remainingPercent: 72,
@@ -119,7 +119,7 @@ final class WidgetSnapshotWriterTests: XCTestCase {
         }
 
         var reloadKinds: [String] = []
-        let writer = QuotaViewWidgetSnapshotWriter(
+        let writer = CodexQuotaViewWidgetSnapshotWriter(
             appGroupIdentifier: "group.test.quotaview",
             containerURLProvider: { _ in temporaryDirectory },
             timelineReloader: { reloadKinds.append($0) }
@@ -139,7 +139,7 @@ final class WidgetSnapshotWriterTests: XCTestCase {
         )
         XCTAssertEqual(
             reloadKinds,
-            [QuotaViewWidgetConfiguration.kind]
+            [CodexQuotaViewWidgetConfiguration.kind]
         )
 
         let stored = try WidgetSnapshotFileStore(

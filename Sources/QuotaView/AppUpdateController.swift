@@ -12,7 +12,7 @@ enum AppUpdateAvailability: Equatable {
 }
 
 struct AppUpdateEnvironment: Equatable {
-    private static let officialSigningTeamIdentifier = "BUUH229D5Q"
+    private static let officialSigningTeamIdentifier = "TEAMID"
 
     let isDebugBuild: Bool
     let isApplicationBundle: Bool
@@ -66,7 +66,7 @@ struct AppUpdateEnvironment: Equatable {
             isApplicationBundle:
                 bundle.bundleURL.pathExtension.lowercased() == "app",
             bundleIdentifier: bundle.bundleIdentifier,
-            expectedBundleIdentifier: "com.quotaview.menubar",
+            expectedBundleIdentifier: "com.zmjza.codexquotaview.menubar",
             signingTeamIdentifier: signingTeamIdentifier(
                 for: bundle.bundleURL
             ),

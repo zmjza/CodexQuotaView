@@ -5,15 +5,15 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>zh_CN</string>
     <key>CFBundleDisplayName</key>
-    <string>QuotaView</string>
+    <string>CodexQuotaView</string>
     <key>CFBundleExecutable</key>
-    <string>QuotaView</string>
+    <string>CodexQuotaView</string>
     <key>CFBundleIdentifier</key>
-    <string>com.quotaview.menubar</string>
+    <string>com.zmjza.codexquotaview.menubar</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
-    <string>QuotaView</string>
+    <string>CodexQuotaView</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
@@ -30,14 +30,14 @@
     <true/>
     <key>NSPrincipalClass</key>
     <string>NSApplication</string>
-    <key>QuotaViewAppGroupIdentifier</key>
-    <string>BUUH229D5Q.com.quotaview.shared</string>
-    <key>QuotaViewUpdateTeamIdentifier</key>
-    <string>BUUH229D5Q</string>
+    <key>CodexQuotaViewAppGroupIdentifier</key>
+    <string>TEAMID.com.zmjza.codexquotaview.shared</string>
+    <key>CodexQuotaViewUpdateTeamIdentifier</key>
+    <string>TEAMID</string>
     <key>SUFeedURL</key>
-    <string>https://duoasa.github.io/QuotaView/appcast.xml</string>
+    <string>https://zmjza.github.io/CodexQuotaView/appcast.xml</string>
     <key>SUPublicEDKey</key>
-    <string>cu6dSd9lxpFU+KdiqaiTanblnNMWQVaj2oTxs7jf/6A=</string>
+    <string>CHANGE_ME_SPARKLE_EDDSA_PUBLIC_KEY</string>
     <key>SUEnableAutomaticChecks</key>
     <false/>
     <key>SUScheduledCheckInterval</key>

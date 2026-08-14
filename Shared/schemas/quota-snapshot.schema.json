@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/zmjza/CodexQuotaView/schemas/quota-snapshot.schema.json",
+  "title": "CodexQuotaView Quota Snapshot",
+  "description": "Versioned, privacy-safe snapshot shared by the macOS and Windows implementations. Never contains credentials, prompts, tool output, full paths, or complete app-server responses.",
+  "type": "object",
+  "required": ["schemaVersion", "capturedAt", "availability", "serviceHealth"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "capturedAt": { "type": "string", "format": "date-time" },
+    "availability": { "enum": ["available", "refreshing", "unavailable", "error"] },
+    "serviceHealth": { "enum": ["normal", "warning", "exhausted", "offline", "error", "unknown"] },
+    "plan": { "type": ["string", "null"] },
+    "primaryWindow": { "$ref": "#/$defs/quotaWindow" },
+    "sparkWindow": { "$ref": "#/$defs/quotaWindow" },
+    "creditBalance": { "type": ["string", "null"] },
+    "hasCredits": { "type": "boolean" },
+    "unlimitedCredits": { "type": "boolean" },
+    "resetCredits": { "type": ["integer", "null"], "minimum": 0 },
+    "recentDailyTokens": { "type": ["integer", "null"], "minimum": 0 },
+    "tokens30d": { "type": ["integer", "null"], "minimum": 0 },
+    "lifetimeTokens": { "type": ["integer", "null"], "minimum": 0 },
+    "estimatedCost30d": { "type": ["string", "null"] },
+    "dailyActivity": {
+      "type": "array",
+      "maxItems": 183,
+      "items": {
+        "type": "object",
+        "required": ["date", "tokens"],
+        "properties": {
+          "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+          "tokens": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "sanitizedError": {
+      "type": ["object", "null"],
+      "properties": {
+        "code": { "type": "string" },
+        "message": { "type": "string", "maxLength": 240 }
+      },
+      "required": ["code"]
+    }
+  },
+  "$defs": {
+    "quotaWindow": {
+      "type": ["object", "null"],
+      "properties": {
+        "id": { "type": "string" },
+        "usedPercent": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "remainingPercent": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+        "resetsAt": { "type": ["string", "null"], "format": "date-time" },
+        "durationMinutes": { "type": ["integer", "null"], "minimum": 1 },
+        "risk": { "enum": ["normal", "warning", "exhausted", "unknown"] }
+      }
+    }
+  }
+}

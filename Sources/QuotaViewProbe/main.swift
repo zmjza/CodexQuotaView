@@ -1,11 +1,11 @@
 import Foundation
-import QuotaViewCore
+import CodexQuotaViewCore
 
 @main
-struct QuotaViewProbe {
+struct CodexQuotaViewProbe {
     static func main() async {
         let timeout = ProcessInfo.processInfo.environment[
-            "QUOTAVIEW_TIMEOUT_SECONDS"
+            "CODEXQUOTAVIEW_TIMEOUT_SECONDS"
         ]
         .flatMap(TimeInterval.init) ?? 45
         let client = CodexAppServerClient(
@@ -82,7 +82,7 @@ struct QuotaViewProbe {
             await client.stop()
         } catch {
             fputs(
-                "QuotaView probe failed: "
+                "CodexQuotaView probe failed: "
                     + error.localizedDescription
                     + "\n",
                 stderr

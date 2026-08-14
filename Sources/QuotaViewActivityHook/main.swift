@@ -4,7 +4,7 @@ import Foundation
 import OSLog
 
 private let diagnosticLogger = Logger(
-    subsystem: "com.quotaview.menubar",
+    subsystem: "com.zmjza.codexquotaview.menubar",
     category: "CodexActivityHook"
 )
 
@@ -247,7 +247,7 @@ private func send(
 }
 
 private func defaultQueuePath() -> String {
-    "/tmp/com.quotaview.codex-activity-\(getuid())"
+    "/tmp/com.zmjza.codexquotaview.codex-activity-\(getuid())"
 }
 
 private func writeFallback(

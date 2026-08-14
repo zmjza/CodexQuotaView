@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C1000000-0000-0000-0000-000000000001}</ProjectGuid>
     <RootNamespace>CodexQuotaViewRendering</RootNamespace>
+    <TargetName>CodexQuotaViewRendering</TargetName>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

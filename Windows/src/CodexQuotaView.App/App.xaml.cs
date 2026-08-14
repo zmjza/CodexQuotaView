@@ -19,6 +19,7 @@ public partial class App : Application
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         var arguments = Environment.GetCommandLineArgs();
+        Console.WriteLine("app arguments: " + string.Join(" ", arguments));
         StartupPage = arguments.Contains("--page=settings") ? "settings" : null;
         _window = new MainWindow();
         _trayIcon = new TrayIcon(_window);

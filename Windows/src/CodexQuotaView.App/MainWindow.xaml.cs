@@ -72,7 +72,8 @@ public sealed partial class MainWindow : Window
     private async Task CaptureAfterDelayAsync(int delayMilliseconds)
     {
         await Task.Delay(delayMilliseconds);
-        CaptureToPng("overview.png");
+        var fileName = Settings.Visibility == Visibility.Visible ? "settings.png" : "overview.png";
+        CaptureToPng(fileName);
         Environment.Exit(0);
     }
 

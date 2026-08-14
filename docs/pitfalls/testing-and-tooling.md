@@ -24,3 +24,24 @@ Probe 和 ActivityHook 目标编译完成，但测试目标在 `import XCTest` �
 `swift test`、`swift --version`、`xcode-select -p`、`xcodebuild -version`。
 
 **适用范围：** macOS 本地 SwiftPM 测试、CI 工具链排障和验证结果报告。
+
+## 本地 Codex app-server 的 usage 接口可能返回上游错误
+
+**现象：** 2026-08-15 在本机运行 CodexQuotaViewProbe（真实 Codex CLI 0.147.0-alpha.6.6，ChatGPT.app 内置），
+额度读取失败，错误为 failed to fetch codex rate limits: error sending request for url (https://chatgpt.com/backend-api/wham/usage)。
+
+**根因：** 信息不全，待人工补充。现有证据说明本地 app-server 进程可正常启动并转发请求，
+失败发生在上游 ChatGPT 后端（网络、登录态或 CLI/服务兼容性均可能）。
+
+**正确做法：** 把该错误视为“数据不可用”状态处理，应用按不可用/错误分支降级显示，
+不崩溃、不显示伪造 0%；验证时区分“本地链路成功但上游失败”与“本地链路不可用”。
+
+**验证方式：** 运行 .build/debug/CodexQuotaViewProbe（或 CI 的 smoke），观察错误分类；
+修复上游后应返回真实额度快照。
+
+**禁止事项：** 不得把该上游错误当作产品缺陷静默吞掉；不得为了演示伪造成功。
+
+**相关文件或命令：** Sources/QuotaViewCore/CodexAppServerClient.swift、
+Sources/QuotaViewProbe/main.swift、Windows/src/CodexQuotaView.Core/CodexProcessBackend.cs。
+
+**适用范围：** 本地真实 Codex 数据链路验证、CLI 版本升级后的兼容性排查。

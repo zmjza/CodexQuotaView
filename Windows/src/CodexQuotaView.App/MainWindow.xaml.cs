@@ -51,7 +51,7 @@ public sealed partial class MainWindow : Window
         Title = "CodexQuotaView";
         OpenSettingsButton.Click += (_, _) => ShowSettings();
         FixturePicker.SelectedIndex = 0;
-        if (App.StartupPage == "settings")
+        if (App.StartupPage == "settings" || App.CapturePage == "settings")
         {
             ShowSettings();
         }

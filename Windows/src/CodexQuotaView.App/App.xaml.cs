@@ -20,6 +20,7 @@ public partial class App : Application
     {
         var arguments = Environment.GetCommandLineArgs();
         StartupPage = arguments.Contains("--page=settings") ? "settings" : null;
+        CapturePage = ReadOption(arguments, "--capture-page");
         ScreenshotDirectory = ReadOption(arguments, "--screenshot-dir");
         _window = new MainWindow();
         _trayIcon = new TrayIcon(_window);
@@ -31,6 +32,7 @@ public partial class App : Application
     }
 
     internal static string? ScreenshotDirectory { get; private set; }
+    internal static string? CapturePage { get; private set; }
 
     private static string? ReadOption(string[] arguments, string optionName)
     {

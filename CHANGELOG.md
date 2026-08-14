@@ -7,6 +7,7 @@
 - 从 QuotaView 开源基线二次开发，产品更名为 CodexQuotaView。
 - Windows x64 原生工程骨架：WinUI 3/.NET 8 Core、Fixture 校验、Native/WSL Backend、D3D11/HLSL 离屏渲染冒烟。
 - 共享 JSON Schema 与脱敏 Fixture，以及 Swift/Python/C# 三端一致性校验。
+- GitHub Actions 双平台 CI 首次全绿：macOS Swift、Windows .NET/Fixture、WinUI + D3D11/HLSL 渲染冒烟。
 
 ### Changed
 

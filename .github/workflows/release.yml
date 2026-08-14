@@ -10,8 +10,8 @@ permissions:
   contents: write
 
 jobs:
-  release:
-    name: Build and publish release assets
+  macos-release:
+    name: macOS Universal ZIP and draft release
     runs-on: macos-26
     timeout-minutes: 60
     steps:
@@ -22,17 +22,17 @@ jobs:
         run: |
           VERSION="1.0.0"
           BUILD="1"
-          if [[ "\$GITHUB_REF" == refs/tags/v* ]]; then
-            TAG="\${GITHUB_REF#refs/tags/v}"
-            VERSION="\${TAG%%-*}"
-            BUILD="\${TAG##*-build.}"
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            TAG="${GITHUB_REF#refs/tags/v}"
+            VERSION="${TAG%%-*}"
+            BUILD="${TAG##*-build.}"
           fi
-          if [[ "\$VERSION" != "1.0.0" || "\$BUILD" != "1" ]]; then
-            echo "Release version gate: expected 1.0.0 Build 1, got \$VERSION (\$BUILD)"
+          if [[ "$VERSION" != "1.0.0" || "$BUILD" != "1" ]]; then
+            echo "Release version gate: expected 1.0.0 Build 1, got $VERSION ($BUILD)"
             exit 1
           fi
-          echo "version=\$VERSION" >> "\$GITHUB_OUTPUT"
-          echo "build=\$BUILD" >> "\$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "build=$BUILD" >> "$GITHUB_OUTPUT"
       - name: Validate changelog
         shell: bash
         run: |
@@ -53,19 +53,30 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             build
+      - name: Verify universal app structure
+        shell: bash
+        run: |
+          APP=".xcode-derived/release/Build/Products/Release/CodexQuotaView.app"
+          if [ ! -d "$APP" ]; then echo "app missing"; exit 1; fi
+          if [ ! -f "$APP/Contents/Resources/Assets.car" ]; then echo "Assets.car missing"; exit 1; fi
+          if [ ! -d "$APP/Contents/PlugIns/CodexQuotaViewWidgetExtension.appex" ]; then echo "widget missing"; exit 1; fi
+          if [ ! -x "$APP/Contents/Helpers/CodexQuotaViewActivityHook" ]; then echo "hook missing"; exit 1; fi
+          if [ ! -d "$APP/Contents/Frameworks/Sparkle.framework" ]; then echo "sparkle missing"; exit 1; fi
+          if [ ! -d "$APP/Contents/Frameworks/CodexQuotaViewCore.framework" ]; then echo "core missing"; exit 1; fi
+          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP/Contents/Info.plist"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/Contents/Info.plist"
       - name: Assemble macOS zip
         shell: bash
         run: |
           mkdir -p dist
           APP=".xcode-derived/release/Build/Products/Release/CodexQuotaView.app"
-          if [ ! -d "\$APP" ]; then echo "app missing"; exit 1; fi
-          ditto -c -k --keepParent "\$APP" "dist/CodexQuotaView-1.0.0-macOS-universal.zip"
-      - name: Compute SHA-256
+          ditto -c -k --keepParent "$APP" "dist/CodexQuotaView-1.0.0-macOS-universal.zip"
+      - name: Compute macOS SHA-256
         shell: bash
         run: |
-          shasum -a 256 dist/* > dist/SHA256SUMS.txt
-          cat dist/SHA256SUMS.txt
-      - name: Upload release assets
+          shasum -a 256 "dist/CodexQuotaView-1.0.0-macOS-universal.zip" > dist/SHA256SUMS-macos.txt
+          cat dist/SHA256SUMS-macos.txt
+      - name: Upload macOS assets to draft release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.0.0-build.1
@@ -74,8 +85,65 @@ jobs:
             CodexQuotaView 1.0.0 Build 1 internal release candidate.
 
             - macOS Universal ZIP (unsigned internal build)
+            - Windows x64 Setup EXE (unsigned internal build)
+            - Windows x64 Portable ZIP (unsigned internal build)
             - SHA-256 checksums
           draft: true
           files: |
             dist/CodexQuotaView-1.0.0-macOS-universal.zip
-            dist/SHA256SUMS.txt
+            dist/SHA256SUMS-macos.txt
+
+  windows-release:
+    name: Windows x64 Setup and Portable ZIP
+    runs-on: windows-2025
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Set up MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: Build native rendering
+        run: msbuild Windows/src/CodexQuotaView.Rendering.Native/CodexQuotaView.Rendering.Native.vcxproj -p:Configuration=Release -p:Platform=x64 -restore
+      - name: Build WinUI app
+        run: dotnet build Windows/src/CodexQuotaView.App/CodexQuotaView.App.csproj -c Release -p:Platform=x64 -r win-x64
+      - name: Copy native rendering into app output
+        shell: pwsh
+        run: |
+          Copy-Item -Force "Windows/src/CodexQuotaView.Rendering.Native/x64/Release/CodexQuotaViewRendering.dll" "Windows/src/CodexQuotaView.App/bin/x64/Release/net8.0-windows10.0.19041.0/win-x64/"
+      - name: Publish self-contained app
+        run: dotnet publish Windows/src/CodexQuotaView.App/CodexQuotaView.App.csproj -c Release -p:Platform=x64 -r win-x64 --self-contained true -o Windows/publish/win-x64
+      - name: Install Velopack CLI
+        run: dotnet tool install --global vpk
+      - name: Pack Velopack release
+        shell: pwsh
+        run: |
+          $env:Path += ";$env:USERPROFILE\.dotnet\tools"
+          vpk pack --packId zmjza.CodexQuotaView --packVersion 1.0.0 --packDir Windows/publish/win-x64 --outputDir Windows/publish/releases --packTitle "CodexQuotaView" --packAuthors "zmjza" --channel stable --mainExe CodexQuotaView.exe
+          Get-ChildItem Windows/publish/releases | Select-Object Name, Length
+      - name: Build portable ZIP
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist | Out-Null
+          Compress-Archive -Path "Windows/publish/win-x64/*" -DestinationPath "dist/CodexQuotaView-1.0.0-windows-x64-portable.zip" -CompressionLevel Optimal
+      - name: Copy Setup EXE and compute SHA-256
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist | Out-Null
+          $setup = Get-ChildItem Windows/publish/releases -Filter "*Setup.exe" | Select-Object -First 1
+          if ($null -eq $setup) { throw "Setup.exe not found" }
+          Copy-Item -Force $setup.FullName "dist/CodexQuotaView-1.0.0-windows-x64-Setup.exe"
+          Get-FileHash -Algorithm SHA256 "dist/CodexQuotaView-1.0.0-windows-x64-Setup.exe" | ForEach-Object { "$($_.Hash.ToLower())  CodexQuotaView-1.0.0-windows-x64-Setup.exe" } | Set-Content -Path dist/SHA256SUMS-windows.txt
+          Get-FileHash -Algorithm SHA256 "dist/CodexQuotaView-1.0.0-windows-x64-portable.zip" | ForEach-Object { "$($_.Hash.ToLower())  CodexQuotaView-1.0.0-windows-x64-portable.zip" } | Add-Content -Path dist/SHA256SUMS-windows.txt
+          Get-ChildItem dist | Select-Object Name, Length
+      - name: Upload Windows assets to draft release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.0-build.1
+          draft: true
+          files: |
+            dist/CodexQuotaView-1.0.0-windows-x64-Setup.exe
+            dist/CodexQuotaView-1.0.0-windows-x64-portable.zip
+            dist/SHA256SUMS-windows.txt

@@ -225,3 +225,12 @@
   Notes 和资产验证事实；
 - 规格与代码冲突时，不得静默选择一方：先核对用户当前指令和生产事实，
   再在同一任务内修正规格或实现。
+
+
+## 8. CodexQuotaView 二开规格注册
+
+以下为 QuotaView 二开产品 CodexQuotaView 1.0.0 Build 1 的唯一规格入口（2026-08-15 新增），与上游 QuotaView 规格相互独立：
+
+| 文档编号 | 文档 | 类型 | 规格状态 | 交付状态 | 当前用途 |
+|---|---|---|---|---|---|
+| `CQV-PRODUCT-1.0.0` | [codexquotaview-1.0.0.md](codexquotaview-1.0.0.md) | 二开产品规格 | `Accepted` | `Verifying` | 1.0.0 Build 1 候选；内部实现与 CI 全绿、真机验收主要项完成；GitHub Draft Release `v1.0.0-build.1`，未公开发布 |

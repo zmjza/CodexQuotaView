@@ -45,3 +45,62 @@ Probe 和 ActivityHook 目标编译完成，但测试目标在 `import XCTest` �
 Sources/QuotaViewProbe/main.swift、Windows/src/CodexQuotaView.Core/CodexProcessBackend.cs。
 
 **适用范围：** 本地真实 Codex 数据链路验证、CLI 版本升级后的兼容性排查。
+
+
+## GitHub Actions 日志与 Artifact 在受限网络下可分段下载
+
+**现象：** 2026-08-15 在本机命令行下载 GitHub Actions artifact/日志 ZIP 时，连接在约 1.5MB 处被截断（1.2–5.6MB 不等），校验和与 GitHub 记录不一致。
+
+**根因：** 信息不全，待人工补充。302 重定向到 Azure blob（productionresultssa12）后由本机代理（MITM，198.18.0.115）按连接限流；单次执行窗口约 1.5MB 传输配额。
+
+**正确做法：** 对同一 SAS URL 使用 300KB Range 分块请求，逐次执行窗口累积下载，按精确字节数截取并用 GitHub 记录的 SHA-256 校验；GitHub artifact digest 可直接用于核对。
+
+**验证方式：** 组装后 `shasum -a 256` 与 API 返回的 digest 一致，`unzip -t` 通过。
+
+**禁止事项：** 不得把截断文件当作完整产物验收；不得把命令行下载失败当作 GitHub 产物不存在。
+
+**相关文件或命令：** `actions/artifacts/{id}/zip`、`curl -r`、`git credential fill`。
+
+**适用范围：** 本机所有 GitHub artifact 下载与回下载复核。
+
+## 直接运行 App 二进制会被会话回收，须用 open 启动
+
+**现象：** 2026-08-15 通过 exec 直接执行 `CodexQuotaView.app/Contents/MacOS/CodexQuotaView`（nohup 后台）后，进程在会话结束即消失，状态项窗口未创建。
+
+**根因：** 执行会话进程组随命令结束被回收；LaunchServices（`open -n`）启动的进程独立于会话存活。
+
+**正确做法：** 真机启动一律使用 `open -n <app>`；需要捕获输出时改用 os_log 或日志文件，避免直接运行二进制。
+
+**验证方式：** `open` 启动后 `pgrep` 跨会话存活；CGWindowList 可见 StatusItem。
+
+**禁止事项：** 不得把直接运行二进制的“假启动”当作 App 启动证据。
+
+**适用范围：** 本机 macOS 真机验收。
+
+## 前台应用窗口遮挡导致 UI 自动化点击失效
+
+**现象：** 2026-08-15 验收时设置窗口被 ChatGPT 主窗口（834,46 1591x928）完全覆盖，坐标点击全部被前台应用截获，AX 元素点击对侧边栏无效，页面无法切换。
+
+**根因：** LSUIElement 菜单栏应用的 `activate` 不会使其成为前台应用；CGWindowList 按 z 序确认 ChatGPT 在前。
+
+**正确做法：** 先核对 CGWindowList z 序与前台应用；必要时最小化遮挡窗口（AXMinimized）或把目标窗口移到未被覆盖区域，再执行坐标点击；元素点击用 `AXUIElementCopyElementAtPosition` + `AXPress` 绕过遮挡。
+
+**验证方式：** 移窗/置前后再点击，AX 状态与截图双重确认。
+
+**禁止事项：** 不得在被遮挡状态下把“点了没反应”误判为 App 缺陷。
+
+**适用范围：** 本机 macOS UI 自动化验收。
+
+## 无签名构建的发布相关占位符
+
+**现象：** 1.0.0 Build 1 无签名构建中 `SUPublicEDKey=CHANGE_ME_SPARKLE_EDDSA_PUBLIC_KEY`，App Group 标识为 `TEAMID.com.zmjza.codexquotaview.shared`。
+
+**根因：** 未签名/无 entitlements 构建无法携带真实公钥与 App Group；Sparkle 门禁（untrustedSignature）与 Widget 快照 fail-soft 均按设计降级。
+
+**正确做法：** 正式签名发布前必须替换 EdDSA 公钥与 Team ID，并在签名/公证后回测更新与 Widget；内部候选交付如实标注占位符。
+
+**验证方式：** PlistBuddy 检查 Info.plist；`ls ~/Library/Group Containers` 确认容器。
+
+**禁止事项：** 不得把占位符版本描述为“可自动更新”或“Widget 可用”。
+
+**适用范围：** CodexQuotaView 候选构建与正式发布前检查。

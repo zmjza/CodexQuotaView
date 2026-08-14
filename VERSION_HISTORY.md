@@ -593,3 +593,20 @@ Tag：`v0.1.0`
 - GitHub Release Notes 使用单份英文源文，避免与 GitHub 自动翻译产生
   重复内容。
 - 不移动或覆盖已发布 tag；热更新使用新的 Build Number、tag 和资产名。
+
+
+---
+
+## CodexQuotaView 候选版本记录（未发布）
+
+以下为二开产品 CodexQuotaView 的候选版本记录，不属于 QuotaView 公开发布历史：
+
+| 项目 | 当前值 |
+|---|---|
+| 候选版本 | `1.0.0 (Build 1)` |
+| tag | `v1.0.0-build.1`（GitHub Draft Release） |
+| 状态 | 候选/未公开；Release 为 Draft，非 Stable/Latest |
+| 资产 | macOS Universal ZIP、Windows Setup EXE、Windows Portable ZIP、SHA256SUMS（见 Draft Release） |
+| 签名 | 无签名本地分发（adhoc），Gatekeeper/SmartScreen 提示为已知限制 |
+| 验收 | macOS 真机验收主要项通过（`liran_docs/09-真机实测.md`）；Windows 内部测试通过（CI run 31820936262） |
+| 发布说明 | 正式公开发布前必须：替换 SUPublicEDKey、TEAMID/App Group、签名/公证（如启用）、更新本记录并切换 Latest |

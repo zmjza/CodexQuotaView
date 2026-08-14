@@ -16,4 +16,6 @@
 
 ### Pending
 
-- macOS Xcode/Universal 构建、Windows Runner 构建与 CI 验证、双平台视觉门禁、签名公证和正式发布（见 `liran_docs/09-真机实测.md`）。
+- 2026-08-15 更新：内部实现、CI 四 job 全绿、macOS 真机验收主要项与 Windows 内部验收完成；候选资产进入 Draft Release v1.0.0-build.1（macOS Universal ZIP、Windows Setup EXE、Windows Portable ZIP、SHA256SUMS）。
+- 正式发布前需：替换 SUPublicEDKey 占位符、TEAMID/App Group 真实值、签名与公证（如启用）、回下载复核与用户最终验收。
+- 已知限制：无签名本地分发（Gatekeeper/SmartScreen 提示）、Sparkle 更新器在无签名构建禁用、无签名构建 Widget 快照不可用、Activity Hook 需用户在 Codex CLI 按 T 信任。

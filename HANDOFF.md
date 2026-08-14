@@ -17,6 +17,16 @@
 > - 外部前置：TEAMID 真实值、Xcode 工具链（本机仅 Command Line Tools，
 >   XCTest 目标需完整 Xcode）、GitHub 推送凭据（CI 实际运行）、Windows
 >   构建由 GitHub Windows Runner 验证。
+> - 2026-08-15 状态：CI 四 job 全绿；macOS 真机验收主要项通过（真实数据/
+>   降级恢复/周期切换/深浅色/清透磨砂/中英文/刷新/Escape/架构/Sparkle 门禁），
+>   受限项为 Hook 安全信任、Widget 添加与 App Group、Reduce Motion/Contrast
+>   系统开关、VoiceOver 完整会话；Windows 内部测试通过（19 项单测、5 张截图、
+>   Setup.exe 72,538,293 字节）；Draft Release v1.0.0-build.1 承载四类资产
+>   （macOS Universal ZIP、Windows Setup、Portable ZIP、SHA256SUMS），未公开发布。
+> - 无签名本地分发：macOS Gatekeeper 需右键打开或 xattr -cr；Windows SmartScreen
+>   提示为已知限制；Sparkle 更新器在无签名构建禁用；SUPublicEDKey 为占位符，
+>   正式签名版必须替换；TEAMID 占位 App Group 需签名环境。
+
 > - 里程碑与验收见 liran_docs/04-开发追踪.md、liran_docs/09-真机实测.md。
 
 工作区：`/private/tmp/quotaview-033-build5-estimated-cost`

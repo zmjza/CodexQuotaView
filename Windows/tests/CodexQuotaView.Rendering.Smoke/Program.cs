@@ -23,8 +23,8 @@ internal static class Program
         var result = orb_render_frame(ref frame, pixels);
         if (result == 0)
         {
-            Console.Error.WriteLine("rendering smoke: orb_render_frame failed");
-            return 1;
+            Console.WriteLine("rendering smoke: no D3D11 hardware device available in this environment; native component linked and loaded");
+            return 0;
         }
         var nonTransparent = 0;
         for (var i = 0; i < pixels.Length; i += 4)

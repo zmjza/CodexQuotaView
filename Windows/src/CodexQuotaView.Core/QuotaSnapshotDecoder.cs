@@ -12,7 +12,7 @@ public static class QuotaSnapshotDecoder
         ReadCommentHandling = JsonCommentHandling.Skip,
     };
 
-    public static QuotaSnapshot Decode(ReadOnlySpan<byte> json)
+    public static QuotaSnapshot Decode(string json)
     {
         using var document = JsonDocument.Parse(json, new JsonDocumentOptions
         {
@@ -47,11 +47,11 @@ public static class QuotaSnapshotDecoder
         };
     }
 
-    public static QuotaSnapshot? TryDecode(ReadOnlySpan<byte> json)
+    public static QuotaSnapshot? TryDecode(byte[] json)
     {
         try
         {
-            return Decode(json);
+            return Decode(System.Text.Encoding.UTF8.GetString(json));
         }
         catch (JsonException)
         {

@@ -12,8 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodexQuotaView.App", "src/C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodexQuotaView.Smoke", "tests/CodexQuotaView.Smoke/CodexQuotaView.Smoke.csproj", "{B1000000-0000-0000-0000-000000000005}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CodexQuotaView.Rendering.Native", "src/CodexQuotaView.Rendering.Native/CodexQuotaView.Rendering.Native.vcxproj", "{C1000000-0000-0000-0000-000000000001}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -40,10 +38,6 @@ Global
 		{B1000000-0000-0000-0000-000000000005}.Debug|x64.Build.0 = Debug|Any CPU
 		{B1000000-0000-0000-0000-000000000005}.Release|x64.ActiveCfg = Release|Any CPU
 		{B1000000-0000-0000-0000-000000000005}.Release|x64.Build.0 = Release|Any CPU
-		{C1000000-0000-0000-0000-000000000001}.Debug|x64.ActiveCfg = Debug|x64
-		{C1000000-0000-0000-0000-000000000001}.Debug|x64.Build.0 = Debug|x64
-		{C1000000-0000-0000-0000-000000000001}.Release|x64.ActiveCfg = Release|x64
-		{C1000000-0000-0000-0000-000000000001}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

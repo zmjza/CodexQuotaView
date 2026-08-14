@@ -25,7 +25,7 @@ public sealed class QuotaSnapshotDecoderTests
         }
         """;
 
-        var snapshot = QuotaSnapshotDecoder.Decode(System.Text.Encoding.UTF8.GetBytes(json));
+        var snapshot = QuotaSnapshotDecoder.Decode(json);
 
         Assert.Equal(1, snapshot.SchemaVersionValue);
         Assert.Equal(SnapshotAvailability.Available, snapshot.Availability);
@@ -49,7 +49,7 @@ public sealed class QuotaSnapshotDecoderTests
         }
         """;
 
-        var snapshot = QuotaSnapshotDecoder.Decode(System.Text.Encoding.UTF8.GetBytes(json));
+        var snapshot = QuotaSnapshotDecoder.Decode(json);
         Assert.Equal(SnapshotAvailability.Available, snapshot.Availability);
     }
 

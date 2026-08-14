@@ -13,7 +13,7 @@ if (!Directory.Exists(fixtures))
 var failures = 0;
 foreach (var file in Directory.EnumerateFiles(fixtures, "*.json").OrderBy(x => x))
 {
-    var json = await File.ReadAllTextAsync(file);
+        var json = await File.ReadAllTextAsync(file);
     var issues = FixtureValidator.ValidateJson(json, Path.GetFileName(file));
     if (issues.Count == 0)
     {

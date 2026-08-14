@@ -74,3 +74,20 @@ jobs:
           Copy-Item -Force "Windows/src/CodexQuotaView.Rendering.Native/x64/Release/CodexQuotaViewRendering.dll" "Windows/src/CodexQuotaView.App/bin/x64/Release/net8.0-windows10.0.19041.0/win-x64/"
       - name: Rendering offscreen frame smoke
         run: dotnet run --project Windows/tests/CodexQuotaView.Rendering.Smoke/CodexQuotaView.Rendering.Smoke.csproj -c Release
+      - name: Launch app and capture overview screenshot
+        shell: pwsh
+        run: |
+          $exe = "Windows/src/CodexQuotaView.App/bin/x64/Release/net8.0-windows10.0.19041.0/win-x64/CodexQuotaView.exe"
+          $process = Start-Process -FilePath $exe -ArgumentList "--screenshot" -WorkingDirectory (Get-Location) -PassThru
+          $process.WaitForExit(20000) | Out-Null
+          if (Test-Path "overview.png") {
+            Write-Host "overview screenshot captured"
+          } else {
+            Write-Host "overview screenshot not found (headless capture may be unsupported)"
+          }
+      - name: Upload overview screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-overview
+          path: overview.png
+          if-no-files-found: warn

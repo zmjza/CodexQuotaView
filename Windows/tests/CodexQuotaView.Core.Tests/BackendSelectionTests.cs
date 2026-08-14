@@ -1,4 +1,5 @@
 using CodexQuotaView.Core;
+using Xunit;
 
 namespace CodexQuotaView.Core.Tests;
 

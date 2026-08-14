@@ -64,9 +64,13 @@ jobs:
           dotnet-version: 8.0.x
       - name: Set up MSVC
         uses: ilammy/msvc-dev-cmd@v1
-      - name: Restore app
-        run: dotnet restore Windows/src/CodexQuotaView.App/CodexQuotaView.App.csproj -r win-x64
-      - name: Build app and native rendering
-        run: msbuild Windows/src/CodexQuotaView.App/CodexQuotaView.App.csproj -p:Configuration=Release -p:Platform=x64 -restore
+      - name: Build native rendering
+        run: msbuild Windows/src/CodexQuotaView.Rendering.Native/CodexQuotaView.Rendering.Native.vcxproj -p:Configuration=Release -p:Platform=x64 -restore
+      - name: Build WinUI app
+        run: dotnet build Windows/src/CodexQuotaView.App/CodexQuotaView.App.csproj -c Release -p:Platform=x64 -r win-x64
+      - name: Copy native rendering into app output
+        shell: pwsh
+        run: |
+          Copy-Item -Force "Windows/src/CodexQuotaView.Rendering.Native/x64/Release/CodexQuotaViewRendering.dll" "Windows/src/CodexQuotaView.App/bin/x64/Release/net8.0-windows10.0.19041.0/win-x64/"
       - name: Rendering offscreen frame smoke
         run: dotnet run --project Windows/tests/CodexQuotaView.Rendering.Smoke/CodexQuotaView.Rendering.Smoke.csproj -c Release

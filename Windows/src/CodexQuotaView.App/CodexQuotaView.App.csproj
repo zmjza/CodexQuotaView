@@ -35,12 +35,4 @@
   <ItemGroup>
     <None Include="app.manifest" />
   </ItemGroup>
-  <Target Name="BuildNativeRendering" BeforeTargets="Build">
-    <MSBuild Projects="..\CodexQuotaView.Rendering.Native\CodexQuotaView.Rendering.Native.vcxproj"
-             Properties="Configuration=$(Configuration);Platform=x64"
-             Targets="Build" />
-    <Copy SourceFiles="..\CodexQuotaView.Rendering.Native\x64\$(Configuration)\CodexQuotaViewRendering.dll"
-          DestinationFolder="$(OutputPath)"
-          Condition="Exists('..\CodexQuotaView.Rendering.Native\x64\$(Configuration)\CodexQuotaViewRendering.dll')" />
-  </Target>
 </Project>

@@ -97,6 +97,11 @@ jobs:
           if (Test-Path "shots-reset/reset.png") {
             Write-Host "reset screenshot captured"
           }
+          $process4 = Start-Process -FilePath $exe -ArgumentList @("--screenshot", "--capture-page", "widget", "--screenshot-dir", "shots-widget") -WorkingDirectory (Get-Location) -PassThru
+          $process4.WaitForExit(20000) | Out-Null
+          if (Test-Path "shots-widget/widget.png") {
+            Write-Host "widget screenshot captured"
+          }
       - name: Upload overview screenshot
         uses: actions/upload-artifact@v4
         with:
@@ -114,6 +119,12 @@ jobs:
         with:
           name: windows-reset
           path: shots-reset/reset.png
+          if-no-files-found: warn
+      - name: Upload widget screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-widget
+          path: shots-widget/widget.png
           if-no-files-found: warn
       - name: Show captured page marker
         shell: pwsh

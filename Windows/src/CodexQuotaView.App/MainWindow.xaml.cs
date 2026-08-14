@@ -99,6 +99,23 @@ public sealed partial class MainWindow : Window
         ShowReset();
     }
 
+    private void OnOpenWidget(object sender, RoutedEventArgs e)
+    {
+        OpenWidget();
+    }
+
+    internal void OpenWidget()
+    {
+        var snapshot = Core.QuotaSnapshotSampleStore.Load(CurrentFixtureKey);
+        _widgetHost ??= new CompactWidgetHostWindow();
+        var widget = _widgetHost;
+        if (snapshot is not null)
+        {
+            widget.Apply(snapshot);
+        }
+        widget.Activate();
+    }
+
     public void ScheduleScreenshot(int delayMilliseconds)
     {
         _ = CaptureAfterDelayAsync(delayMilliseconds);
@@ -115,11 +132,18 @@ public sealed partial class MainWindow : Window
         {
             ShowReset();
         }
-        var pageName = Settings.Visibility == Visibility.Visible
+        var pageName = App.CapturePage == "widget"
+            ? "widget"
+            : Settings.Visibility == Visibility.Visible
             ? "settings"
             : ResetPage.Visibility == Visibility.Visible
                 ? "reset"
                 : "overview";
+        if (App.CapturePage == "widget")
+        {
+            OpenWidget();
+            await Task.Delay(1500);
+        }
         var fileName = pageName + ".png";
         File.WriteAllText(
             Path.Combine(Environment.CurrentDirectory, "captured-page.txt"),
@@ -131,9 +155,19 @@ public sealed partial class MainWindow : Window
             fileName = Path.Combine(directory, fileName);
         }
         Console.WriteLine("capture page: " + pageName);
-        CaptureToPng(fileName);
+        if (App.CapturePage == "widget")
+        {
+            var widgetWindow = _widgetHost;
+            widgetWindow?.CaptureToPng(fileName);
+        }
+        else
+        {
+            CaptureToPng(fileName);
+        }
         Environment.Exit(0);
     }
+
+    private CompactWidgetHostWindow? _widgetHost;
 
     private void CaptureToPng(string fileName)
     {

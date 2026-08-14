@@ -25,6 +25,10 @@ public partial class App : Application
         _window = new MainWindow();
         _trayIcon = new TrayIcon(_window);
         _window.Activate();
+        if (arguments.Contains("--open-widget"))
+        {
+            ((MainWindow)_window).OpenWidget();
+        }
         if (arguments.Contains("--screenshot"))
         {
             ((MainWindow)_window).ScheduleScreenshot(3000);

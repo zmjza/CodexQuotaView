@@ -1,0 +1,37 @@
+<Window
+    x:Class="CodexQuotaView.App.CompactWidgetHostWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="CodexQuotaView Widget">
+    <Grid Background="{ThemeResource SystemControlBackgroundAltHighBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="12"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Padding="16,14,0,14" Spacing="8">
+            <Grid>
+                <TextBlock x:Name="WidgetPlanText" Text="—" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Left"/>
+                <Ellipse x:Name="WidgetStatusDot" Width="5" Height="5" Fill="{ThemeResource SystemFillColorCriticalBrush}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            </Grid>
+            <TextBlock x:Name="WidgetRemainingText" Text="—" FontSize="32" FontWeight="SemiBold"/>
+            <ProgressBar x:Name="WidgetQuotaBar" Height="8" Maximum="100" HorizontalAlignment="Stretch"/>
+            <TextBlock x:Name="WidgetResetText" Text="—" FontSize="11" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+        </StackPanel>
+        <Border Grid.Column="1" Width="0.5" Background="{ThemeResource DividerStrokeColorDefaultBrush}"/>
+        <StackPanel Grid.Column="2" Padding="16,14,16,14" Spacing="10">
+            <StackPanel Spacing="2">
+                <TextBlock Text="Credits" FontSize="10" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                <TextBlock x:Name="WidgetCreditsText" Text="—" FontSize="10" FontWeight="SemiBold"/>
+            </StackPanel>
+            <StackPanel Spacing="2">
+                <TextBlock Text="最近一天" FontSize="10" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                <TextBlock x:Name="WidgetTodayText" Text="—" FontSize="10" FontWeight="SemiBold"/>
+            </StackPanel>
+            <StackPanel Spacing="2">
+                <TextBlock Text="累计" FontSize="10" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                <TextBlock x:Name="WidgetLifetimeText" Text="—" FontSize="10" FontWeight="SemiBold"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

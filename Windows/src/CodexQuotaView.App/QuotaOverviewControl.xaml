@@ -74,7 +74,13 @@
                     <TextBlock x:Name="CostText" Text="—" FontSize="10.5" FontWeight="SemiBold"/>
                 </StackPanel>
             </Grid>
-            <ItemsControl Grid.Row="4" x:Name="ActivityGrid"/>
+            <ItemsControl Grid.Row="4" x:Name="ActivityGrid">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid Orientation="Horizontal" ItemWidth="15" ItemHeight="15"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
         </Grid>
         <Grid Grid.Row="2" Padding="12,0,12,0">
             <TextBlock x:Name="UpdatedText" Text="—" FontSize="10" Foreground="{ThemeResource TextFillColorSecondaryBrush}" VerticalAlignment="Center"/>

@@ -60,7 +60,7 @@ public sealed partial class QuotaOverviewControl : UserControl
 
     private void RenderActivity(IReadOnlyList<DailyActivityBucket> buckets)
     {
-        var panel = new WrapPanel();
+        var cells = new List<UIElement>();
         var visible = buckets.Take(16).Reverse().ToList();
         foreach (var bucket in visible)
         {
@@ -74,12 +74,14 @@ public sealed partial class QuotaOverviewControl : UserControl
                 CornerRadius = new CornerRadius(3),
                 Background = color,
                 Margin = new Thickness(0, 0, 3, 3),
-                ToolTip = bucket.Date.ToString("MM-dd") + ": " + FormatCompact(bucket.Tokens) + " Token",
             };
-            panel.Children.Add(cell);
+            ToolTipService.SetToolTip(
+                cell,
+                bucket.Date.ToString("MM-dd") + ": " + FormatCompact(bucket.Tokens) + " Token");
+            cells.Add(cell);
         }
         ActivityGrid.ItemsSource = null;
-        ActivityGrid.ItemsSource = new List<UIElement> { panel };
+        ActivityGrid.ItemsSource = cells;
     }
 
     private static byte BucketIntensity(long tokens, IReadOnlyList<DailyActivityBucket> all)

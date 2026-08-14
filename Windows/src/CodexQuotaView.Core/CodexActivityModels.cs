@@ -90,21 +90,23 @@ public static class CodexActivityReducer
 {
     public const int CurrentSchemaVersion = 1;
 
-    public static CodexActivitySnapshot? Reduce(CodexActivityEvent? event)
+    public static CodexActivitySnapshot? Reduce(CodexActivityEvent? activityEvent)
     {
-        if (event is null || event.SchemaVersion != CurrentSchemaVersion || string.IsNullOrEmpty(event.SessionHash))
+        if (activityEvent is null
+            || activityEvent.SchemaVersion != CurrentSchemaVersion
+            || string.IsNullOrEmpty(activityEvent.SessionHash))
         {
             return null;
         }
 
-        var (state, operation) = event.Event switch
+        var (state, operation) = activityEvent.Event switch
         {
-            CodexActivityHookEvent.SessionStart => event.SessionStartSource == CodexActivitySessionStartSource.Compact
+            CodexActivityHookEvent.SessionStart => activityEvent.SessionStartSource == CodexActivitySessionStartSource.Compact
                 ? (CodexActivityVisualState.Thinking, CodexActivityOperationKey.ContinuingAfterCompaction)
                 : (CodexActivityVisualState.Standby, CodexActivityOperationKey.ConnectingSession),
             CodexActivityHookEvent.SessionEnd => (CodexActivityVisualState.Standby, CodexActivityOperationKey.SessionEnded),
             CodexActivityHookEvent.UserPromptSubmit => (CodexActivityVisualState.Thinking, CodexActivityOperationKey.AnalyzingRequest),
-            CodexActivityHookEvent.PreToolUse => (CodexActivityVisualState.Working, OperationForTool(event.ToolCategory)),
+            CodexActivityHookEvent.PreToolUse => (CodexActivityVisualState.Working, OperationForTool(activityEvent.ToolCategory)),
             CodexActivityHookEvent.PermissionRequest => (CodexActivityVisualState.AwaitingConfirmation, CodexActivityOperationKey.AwaitingApproval),
             CodexActivityHookEvent.PostToolUse => (CodexActivityVisualState.Thinking, CodexActivityOperationKey.ReviewingToolResult),
             CodexActivityHookEvent.PreCompact => (CodexActivityVisualState.CompactingContext, CodexActivityOperationKey.CompactingContext),
@@ -116,25 +118,25 @@ public static class CodexActivityReducer
         };
 
         return new CodexActivitySnapshot(
-            event.SessionHash,
+            activityEvent.SessionHash,
             state,
-            event.WorkspaceName,
+            activityEvent.WorkspaceName,
             operation,
-            event.ToolCategory,
-            event.OccurredAt);
+            activityEvent.ToolCategory,
+            activityEvent.OccurredAt);
     }
 
-    public static bool ShouldHideImmediately(CodexActivityEvent? event)
+    public static bool ShouldHideImmediately(CodexActivityEvent? activityEvent)
     {
-        return event?.Event == CodexActivityHookEvent.SessionEnd;
+        return activityEvent?.Event == CodexActivityHookEvent.SessionEnd;
     }
 
-    public static bool ShouldStartInactivityCycle(CodexActivityEvent? event)
+    public static bool ShouldStartInactivityCycle(CodexActivityEvent? activityEvent)
     {
-        return event?.Event switch
+        return activityEvent?.Event switch
         {
             CodexActivityHookEvent.Stop => true,
-            CodexActivityHookEvent.SessionStart => event.SessionStartSource != CodexActivitySessionStartSource.Compact,
+            CodexActivityHookEvent.SessionStart => activityEvent.SessionStartSource != CodexActivitySessionStartSource.Compact,
             _ => false,
         };
     }

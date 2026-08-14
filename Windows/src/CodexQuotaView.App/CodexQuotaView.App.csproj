@@ -27,6 +27,12 @@
     <ProjectReference Include="..\CodexQuotaView.Core\CodexQuotaView.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\..\Shared\fixtures\*.json">
+      <Link>fixtures\%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="..\CodexQuotaView.Rendering.Native\x64\$(Configuration)\CodexQuotaViewRendering.dll"
              Link="CodexQuotaViewRendering.dll"
              CopyToOutputDirectory="PreserveNewest"

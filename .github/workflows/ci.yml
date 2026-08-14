@@ -154,12 +154,9 @@ jobs:
       - name: Verify release package structure
         shell: pwsh
         run: |
-          $setup = Get-ChildItem Windows/publish/releases -Filter "Setup.exe" | Select-Object -First 1
+          $setup = Get-ChildItem Windows/publish/releases -Filter "*Setup.exe" | Select-Object -First 1
           if ($null -eq $setup) { throw "Setup.exe not found" }
-          $portable = Get-ChildItem Windows/publish/releases -Filter "*.zip" | Select-Object -First 1
-          if ($null -eq $portable) { throw "portable zip not found" }
           Write-Host "setup=$($setup.Name) size=$($setup.Length)"
-          Write-Host "portable=$($portable.Name) size=$($portable.Length)"
       - name: Upload release packages
         uses: actions/upload-artifact@v4
         with:

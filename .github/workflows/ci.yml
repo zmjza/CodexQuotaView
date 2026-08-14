@@ -78,24 +78,27 @@ jobs:
         shell: pwsh
         run: |
           $exe = "Windows/src/CodexQuotaView.App/bin/x64/Release/net8.0-windows10.0.19041.0/win-x64/CodexQuotaView.exe"
-          $process = Start-Process -FilePath $exe -ArgumentList "--screenshot" -WorkingDirectory (Get-Location) -PassThru
+          $process = Start-Process -FilePath $exe -ArgumentList @("--screenshot", "--screenshot-dir", "shots-overview") -WorkingDirectory (Get-Location) -PassThru
           $process.WaitForExit(20000) | Out-Null
-          if (Test-Path "overview.png") {
+          if (Test-Path "shots-overview/overview.png") {
             Write-Host "overview screenshot captured"
           } else {
             Write-Host "overview screenshot not found (headless capture may be unsupported)"
           }
-          $process2 = Start-Process -FilePath $exe -ArgumentList @("--screenshot", "--page=settings") -WorkingDirectory (Get-Location) -PassThru
+          $process2 = Start-Process -FilePath $exe -ArgumentList @("--screenshot", "--page=settings", "--screenshot-dir", "shots-settings") -WorkingDirectory (Get-Location) -PassThru
           $process2.WaitForExit(20000) | Out-Null
+          if (Test-Path "shots-settings/settings.png") {
+            Write-Host "settings screenshot captured"
+          }
       - name: Upload overview screenshot
         uses: actions/upload-artifact@v4
         with:
           name: windows-overview
-          path: overview.png
+          path: shots-overview/overview.png
           if-no-files-found: warn
       - name: Upload settings screenshot
         uses: actions/upload-artifact@v4
         with:
           name: windows-settings
-          path: settings.png
+          path: shots-settings/settings.png
           if-no-files-found: warn

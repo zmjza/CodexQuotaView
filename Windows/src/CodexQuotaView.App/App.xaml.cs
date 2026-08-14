@@ -19,8 +19,8 @@ public partial class App : Application
     protected override void OnLaunched(LaunchActivatedEventArgs args)
     {
         var arguments = Environment.GetCommandLineArgs();
-        Console.WriteLine("app arguments: " + string.Join(" ", arguments));
         StartupPage = arguments.Contains("--page=settings") ? "settings" : null;
+        ScreenshotDirectory = ReadOption(arguments, "--screenshot-dir");
         _window = new MainWindow();
         _trayIcon = new TrayIcon(_window);
         _window.Activate();
@@ -28,5 +28,13 @@ public partial class App : Application
         {
             ((MainWindow)_window).ScheduleScreenshot(3000);
         }
+    }
+
+    internal static string? ScreenshotDirectory { get; private set; }
+
+    private static string? ReadOption(string[] arguments, string optionName)
+    {
+        var index = Array.IndexOf(arguments, optionName);
+        return index >= 0 && index + 1 < arguments.Length ? arguments[index + 1] : null;
     }
 }

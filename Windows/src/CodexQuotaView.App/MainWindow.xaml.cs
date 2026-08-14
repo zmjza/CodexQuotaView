@@ -72,7 +72,15 @@ public sealed partial class MainWindow : Window
     private async Task CaptureAfterDelayAsync(int delayMilliseconds)
     {
         await Task.Delay(delayMilliseconds);
-        var fileName = Settings.Visibility == Visibility.Visible ? "settings.png" : "overview.png";
+        var pageName = Settings.Visibility == Visibility.Visible ? "settings" : "overview";
+        var fileName = pageName + ".png";
+        if (!string.IsNullOrEmpty(App.ScreenshotDirectory))
+        {
+            var directory = Path.Combine(Environment.CurrentDirectory, App.ScreenshotDirectory!);
+            Directory.CreateDirectory(directory);
+            fileName = Path.Combine(directory, fileName);
+        }
+        Console.WriteLine("capture page: " + pageName);
         CaptureToPng(fileName);
         Environment.Exit(0);
     }

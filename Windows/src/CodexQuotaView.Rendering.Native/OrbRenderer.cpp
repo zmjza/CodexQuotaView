@@ -65,9 +65,15 @@ bool EnsureDevice(int width, int height) {
     g_staging.Reset();
 
     D3D_FEATURE_LEVEL featureLevels[] = {D3D_FEATURE_LEVEL_11_0, D3D_FEATURE_LEVEL_10_0};
-    if (FAILED(D3D11CreateDevice(
-            nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, featureLevels, 2,
-            D3D11_SDK_VERSION, g_device.GetAddressOf(), nullptr, g_context.GetAddressOf()))) {
+    HRESULT deviceResult = D3D11CreateDevice(
+        nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, featureLevels, 2,
+        D3D11_SDK_VERSION, g_device.GetAddressOf(), nullptr, g_context.GetAddressOf());
+    if (FAILED(deviceResult)) {
+        deviceResult = D3D11CreateDevice(
+            nullptr, D3D_DRIVER_TYPE_WARP, nullptr, 0, featureLevels, 2,
+            D3D11_SDK_VERSION, g_device.GetAddressOf(), nullptr, g_context.GetAddressOf());
+    }
+    if (FAILED(deviceResult)) {
         return false;
     }
 
@@ -75,9 +81,11 @@ bool EnsureDevice(int width, int height) {
     ComPtr<ID3DBlob> pixelBlob;
     ComPtr<ID3DBlob> errorBlob;
     if (FAILED(D3DCompile(kVertexShader, strlen(kVertexShader), "vertex", nullptr, nullptr,
-                          "main", "vs_5_0", 0, 0, vertexBlob.GetAddressOf(), errorBlob.GetAddressOf())) ||
+                          "main", "vs_5_0", 0, 0, vertexBlob.GetAddressOf(),
+                          errorBlob ? errorBlob.GetAddressOf() : nullptr)) ||
         FAILED(D3DCompile(kPixelShader, strlen(kPixelShader), "pixel", nullptr, nullptr,
-                          "main", "ps_5_0", 0, 0, pixelBlob.GetAddressOf(), errorBlob.GetAddressOf()))) {
+                          "main", "ps_5_0", 0, 0, pixelBlob.GetAddressOf(),
+                          errorBlob ? errorBlob.GetAddressOf() : nullptr))) {
         return false;
     }
 

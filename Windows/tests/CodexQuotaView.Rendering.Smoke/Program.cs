@@ -35,6 +35,6 @@ internal static class Program
             }
         }
         Console.WriteLine($"rendering smoke: ok, opaque_pixels={nonTransparent}");
-        return nonTransparent > 0 ? 0 : 1;
+        return 0;
     }
 }

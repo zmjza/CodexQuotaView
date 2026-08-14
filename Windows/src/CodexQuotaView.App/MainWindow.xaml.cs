@@ -49,7 +49,19 @@ public sealed partial class MainWindow : Window
     {
         InitializeComponent();
         Title = "CodexQuotaView";
+        OpenSettingsButton.Click += (_, _) => ShowSettings();
         FixturePicker.SelectedIndex = 0;
+        if (App.StartupPage == "settings")
+        {
+            ShowSettings();
+        }
+    }
+
+    private void ShowSettings()
+    {
+        OverviewRoot.Visibility = Visibility.Collapsed;
+        Settings.Visibility = Visibility.Visible;
+        OpenSettingsButton.Visibility = Visibility.Collapsed;
     }
 
     public void ScheduleScreenshot(int delayMilliseconds)
@@ -113,4 +125,5 @@ public sealed partial class MainWindow : Window
             Overview.Apply(snapshot);
         }
     }
+
 }

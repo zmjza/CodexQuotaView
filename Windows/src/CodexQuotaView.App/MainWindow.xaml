@@ -9,8 +9,13 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <controls:QuotaOverviewControl x:Name="Overview" Grid.Row="0"/>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8" Padding="12,8,12,8">
+        <Grid x:Name="OverviewRoot" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <controls:QuotaOverviewControl x:Name="Overview"/>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8" Padding="12,8,12,8">
             <TextBlock Text="样例数据" FontSize="10" VerticalAlignment="Center" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
             <ComboBox x:Name="FixturePicker" SelectionChanged="OnFixtureChanged" MinWidth="120">
                 <ComboBoxItem Content="可用" Tag="available"/>
@@ -19,6 +24,9 @@
                 <ComboBoxItem Content="不可用" Tag="unavailable"/>
                 <ComboBoxItem Content="错误" Tag="error"/>
             </ComboBox>
-        </StackPanel>
+            </StackPanel>
+        </Grid>
+        <controls:SettingsControl x:Name="Settings" Grid.Row="0" Visibility="Collapsed"/>
+        <Button x:Name="OpenSettingsButton" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,12,12,0" Width="28" Height="28" Padding="0" Content="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="12"/>
     </Grid>
 </Window>

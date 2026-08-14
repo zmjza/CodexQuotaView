@@ -104,3 +104,33 @@ Sources/QuotaViewProbe/main.swift、Windows/src/CodexQuotaView.Core/CodexProcess
 **禁止事项：** 不得把占位符版本描述为“可自动更新”或“Widget 可用”。
 
 **适用范围：** CodexQuotaView 候选构建与正式发布前检查。
+
+## Computer Use 插件通过 node_repl + @oai/sky 接入，不是独立 MCP 工具
+
+**现象：** 2026-08-15 在 Codex 桌面端会话中找不到 `mcp__computer-use__*` 工具，误以为 @电脑 不可用，退化为 shell + AppleScript + cliclick + AX 手工驱动；同时 `~/.codex/config.toml` 中残留 `[mcp_servers.computer-use]`（相对路径、`enabled = false`）干扰判断。
+
+**根因：** 已确认。computer-use 插件（bundled 1.0.1000633）的官方接入方式是 node_repl 会话导入 `@oai/sky` 包（`globalThis.sky = (await import("@oai/sky")).sky`），MCP server 名为 `node_repl`，工具为 `js`；config.toml 中那条手工 `[mcp_servers.computer-use]` 是无效残留，不应作为可用性依据。
+
+**正确做法：** 使用 @电脑 时直接调用 `mcp__node_repl__js`，先 `globalThis.sky = (await import("@oai/sky")).sky`，再用 `sky.list_apps()` / `sky.get_app_state({app})` / `sky.click` 等 API；app 参数支持显示名、Bundle ID 或完整路径。
+
+**验证方式：** `sky.list_apps()` 返回真实应用列表即链路可用；`get_app_state` 返回 AX 文本与截图。
+
+**禁止事项：** 不要因缺少 `mcp__computer-use__*` 工具名就断言 @电脑 不可用；不要直接 spawn SkyComputerUseClient 二进制（会报 -10000 未认证）。
+
+**相关文件或命令：** `/Users/liran/.codex/plugins/cache/openai-bundled/computer-use/1.0.1000633/skills/computer-use/SKILL.md`、`mcp__node_repl__js`、`~/.codex/config.toml`。
+
+**适用范围：** 本机 Codex 桌面端所有需要控制 Mac 应用的会话。
+
+## 屏幕锁定期间 Computer Use 自动解锁暂停
+
+**现象：** 2026-08-15 第二轮验收时 Mac 进入锁定状态，`sky.get_app_state` 返回 “The Mac is locked and automatic unlock is paused because physical input was detected”。
+
+**根因：** 已确认。Computer Use 检测到物理输入（用户在场）时暂停自动解锁，要求人工解锁后才能继续 UI 操作。
+
+**正确做法：** 遇到该错误时先检查 `pgrep -x loginwindow` 与屏幕状态；提示用户手动解锁后再继续，不要反复重试或绕过。
+
+**验证方式：** 解锁后同一 `get_app_state` 调用返回正常 AX 树。
+
+**禁止事项：** 不要在锁定状态下把 UI 操作失败误判为应用缺陷。
+
+**适用范围：** 本机 macOS 真机验收与 @电脑 自动化。

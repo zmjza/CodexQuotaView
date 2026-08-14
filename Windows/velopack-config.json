@@ -1,0 +1,8 @@
+{
+  "appId": "zmjza.CodexQuotaView",
+  "title": "CodexQuotaView",
+  "version": "1.0.0",
+  "channel": "stable",
+  "runtime": "win-x64",
+  "releaseNotes": "CodexQuotaView 1.0.0 Build 1 initial release"
+}

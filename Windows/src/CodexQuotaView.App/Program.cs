@@ -9,6 +9,7 @@ internal static class Program
     [STAThread]
     private static int Main(string[] args)
     {
+        Velopack.VelopackApp.Build().Run();
         WinRT.ComWrappersSupport.InitializeComWrappers();
         Application.Start(_ =>
         {

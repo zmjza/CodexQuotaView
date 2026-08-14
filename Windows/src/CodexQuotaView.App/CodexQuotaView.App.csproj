@@ -13,7 +13,6 @@
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
     <SelfContained>true</SelfContained>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <PublishProfile>Default</PublishProfile>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AppxPackage>false</AppxPackage>

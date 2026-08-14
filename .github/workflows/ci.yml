@@ -89,6 +89,8 @@ jobs:
           $process2.WaitForExit(20000) | Out-Null
           if (Test-Path "shots-settings/settings.png") {
             Write-Host "settings screenshot captured"
+          } else {
+            Write-Host "settings screenshot not found"
           }
       - name: Upload overview screenshot
         uses: actions/upload-artifact@v4
@@ -102,3 +104,7 @@ jobs:
           name: windows-settings
           path: shots-settings/settings.png
           if-no-files-found: warn
+      - name: Show captured page marker
+        shell: pwsh
+        run: |
+          if (Test-Path "captured-page.txt") { Get-Content "captured-page.txt" } else { Write-Host "no marker" }

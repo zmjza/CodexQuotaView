@@ -92,6 +92,11 @@ jobs:
           } else {
             Write-Host "settings screenshot not found"
           }
+          $process3 = Start-Process -FilePath $exe -ArgumentList @("--screenshot", "--capture-page", "reset", "--screenshot-dir", "shots-reset") -WorkingDirectory (Get-Location) -PassThru
+          $process3.WaitForExit(20000) | Out-Null
+          if (Test-Path "shots-reset/reset.png") {
+            Write-Host "reset screenshot captured"
+          }
       - name: Upload overview screenshot
         uses: actions/upload-artifact@v4
         with:
@@ -103,6 +108,12 @@ jobs:
         with:
           name: windows-settings
           path: shots-settings/settings.png
+          if-no-files-found: warn
+      - name: Upload reset screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-reset
+          path: shots-reset/reset.png
           if-no-files-found: warn
       - name: Show captured page marker
         shell: pwsh

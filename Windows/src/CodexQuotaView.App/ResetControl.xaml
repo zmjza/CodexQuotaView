@@ -1,0 +1,61 @@
+<UserControl
+    x:Class="CodexQuotaView.App.ResetControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Width="274" Height="433">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="48"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Padding="12,0,12,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="BackButton" Width="24" Height="24" Padding="0" Content="&#xE72B;" FontFamily="Segoe MDL2 Assets" FontSize="12" Click="OnBack"/>
+            <TextBlock Grid.Column="1" Text="额度重置" FontSize="15" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Border Grid.Column="2" CornerRadius="6" Background="{ThemeResource SubtleFillColorSecondaryBrush}" Padding="6,2,6,2">
+                <TextBlock Text="演示" FontSize="9" FontWeight="SemiBold"/>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="1" Padding="12,0,12,0" RowSpacing="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="可用重置次数" FontSize="10" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+            <TextBlock x:Name="CreditsHeroText" Grid.Row="1" Text="—" FontSize="32" FontWeight="SemiBold"/>
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="6">
+                <Border x:Name="TicketOne" Width="22" Height="16" CornerRadius="2" Background="{ThemeResource AccentFillColorDefaultBrush}"/>
+                <Border x:Name="TicketTwo" Width="22" Height="16" CornerRadius="2" Background="{ThemeResource AccentFillColorDefaultBrush}"/>
+                <Border x:Name="TicketThree" Width="22" Height="16" CornerRadius="2" Background="{ThemeResource AccentFillColorDefaultBrush}"/>
+                <Border x:Name="TicketFour" Width="22" Height="16" CornerRadius="2" Background="{ThemeResource AccentFillColorDefaultBrush}"/>
+                <Border x:Name="TicketFive" Width="22" Height="16" CornerRadius="2" Background="{ThemeResource AccentFillColorDefaultBrush}"/>
+                <Border x:Name="TicketSix" Width="22" Height="16" CornerRadius="2" Background="{ThemeResource AccentFillColorDefaultBrush}"/>
+            </StackPanel>
+            <TextBlock x:Name="ResetDescriptionText" Grid.Row="3" TextWrapping="Wrap" FontSize="10" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+            <StackPanel Grid.Row="4" VerticalAlignment="Bottom" Spacing="8">
+                <Button x:Name="ResetButton" Content="重置额度（演示）" Height="32" HorizontalAlignment="Stretch" Click="OnResetClicked"/>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="0" Grid.RowSpan="3" x:Name="ConfirmOverlay" Background="#B3000000" Visibility="Collapsed">
+            <Border Width="250" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="12" Background="{ThemeResource LayerFillColorDefaultBrush}" Padding="16">
+                <StackPanel Spacing="10">
+                    <TextBlock Text="确认重置额度？" FontSize="14" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="ConfirmDescriptionText" TextWrapping="Wrap" FontSize="11" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button x:Name="ConfirmResetButton" Content="确认演示重置" Height="30" Click="OnConfirmReset" Foreground="{ThemeResource SystemFillColorCriticalBrush}" Background="{ThemeResource SystemFillColorCriticalBackgroundBrush}"/>
+                        <Button x:Name="CancelResetButton" Content="取消" Height="30" Click="OnCancelReset"/>
+                    </StackPanel>
+                    <TextBlock x:Name="DemoResultText" TextWrapping="Wrap" FontSize="10" Foreground="{ThemeResource SystemFillColorSuccessBrush}" Visibility="Collapsed"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

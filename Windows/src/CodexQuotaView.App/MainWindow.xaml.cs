@@ -50,6 +50,7 @@ public sealed partial class MainWindow : Window
         InitializeComponent();
         Title = "CodexQuotaView";
         OpenSettingsButton.Click += (_, _) => ShowSettings();
+        ResetPage.BackRequested += ShowOverview;
         FixturePicker.SelectedIndex = 0;
         if (App.StartupPage == "settings" || App.CapturePage == "settings")
         {
@@ -61,7 +62,41 @@ public sealed partial class MainWindow : Window
     {
         OverviewRoot.Visibility = Visibility.Collapsed;
         Settings.Visibility = Visibility.Visible;
+        ResetPage.Visibility = Visibility.Collapsed;
         OpenSettingsButton.Visibility = Visibility.Collapsed;
+        OpenResetButton.Visibility = Visibility.Collapsed;
+    }
+
+    private void ShowOverview()
+    {
+        OverviewRoot.Visibility = Visibility.Visible;
+        Settings.Visibility = Visibility.Collapsed;
+        ResetPage.Visibility = Visibility.Collapsed;
+        OpenSettingsButton.Visibility = Visibility.Visible;
+        OpenResetButton.Visibility = Visibility.Visible;
+    }
+
+    private void ShowReset()
+    {
+        if (Core.QuotaSnapshotSampleStore.Load(CurrentFixtureKey) is { } resetSnapshot)
+        {
+            ResetPage.Apply(resetSnapshot);
+        }
+        OverviewRoot.Visibility = Visibility.Collapsed;
+        Settings.Visibility = Visibility.Collapsed;
+        ResetPage.Visibility = Visibility.Visible;
+        OpenSettingsButton.Visibility = Visibility.Collapsed;
+        OpenResetButton.Visibility = Visibility.Collapsed;
+    }
+
+    private string CurrentFixtureKey =>
+        FixturePicker.SelectedItem is ComboBoxItem item && item.Tag is string key
+            ? key
+            : "available";
+
+    private void OnOpenReset(object sender, RoutedEventArgs e)
+    {
+        ShowReset();
     }
 
     public void ScheduleScreenshot(int delayMilliseconds)
@@ -72,11 +107,19 @@ public sealed partial class MainWindow : Window
     private async Task CaptureAfterDelayAsync(int delayMilliseconds)
     {
         await Task.Delay(delayMilliseconds);
-        if (App.StartupPage == "settings")
+        if (App.StartupPage == "settings" || App.CapturePage == "settings")
         {
             ShowSettings();
         }
-        var pageName = Settings.Visibility == Visibility.Visible ? "settings" : "overview";
+        else if (App.CapturePage == "reset")
+        {
+            ShowReset();
+        }
+        var pageName = Settings.Visibility == Visibility.Visible
+            ? "settings"
+            : ResetPage.Visibility == Visibility.Visible
+                ? "reset"
+                : "overview";
         var fileName = pageName + ".png";
         File.WriteAllText(
             Path.Combine(Environment.CurrentDirectory, "captured-page.txt"),

@@ -1,0 +1,81 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish release assets
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - name: Resolve version from tag or input
+        id: version
+        shell: bash
+        run: |
+          VERSION="1.0.0"
+          BUILD="1"
+          if [[ "\$GITHUB_REF" == refs/tags/v* ]]; then
+            TAG="\${GITHUB_REF#refs/tags/v}"
+            VERSION="\${TAG%%-*}"
+            BUILD="\${TAG##*-build.}"
+          fi
+          if [[ "\$VERSION" != "1.0.0" || "\$BUILD" != "1" ]]; then
+            echo "Release version gate: expected 1.0.0 Build 1, got \$VERSION (\$BUILD)"
+            exit 1
+          fi
+          echo "version=\$VERSION" >> "\$GITHUB_OUTPUT"
+          echo "build=\$BUILD" >> "\$GITHUB_OUTPUT"
+      - name: Validate changelog
+        shell: bash
+        run: |
+          if ! grep -q "1.0.0 Build 1" CHANGELOG.md; then
+            echo "CHANGELOG missing 1.0.0 Build 1 entry"
+            exit 1
+          fi
+      - name: Build macOS Universal app
+        run: |
+          xcodebuild \
+            -project CodexQuotaView.xcodeproj \
+            -scheme CodexQuotaView \
+            -configuration Release \
+            -destination "generic/platform=macOS" \
+            -derivedDataPath .xcode-derived/release \
+            ARCHS="arm64 x86_64" \
+            ONLY_ACTIVE_ARCH=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            build
+      - name: Assemble macOS zip
+        shell: bash
+        run: |
+          mkdir -p dist
+          APP=".xcode-derived/release/Build/Products/Release/CodexQuotaView.app"
+          if [ ! -d "\$APP" ]; then echo "app missing"; exit 1; fi
+          ditto -c -k --keepParent "\$APP" "dist/CodexQuotaView-1.0.0-macOS-universal.zip"
+      - name: Compute SHA-256
+        shell: bash
+        run: |
+          shasum -a 256 dist/* > dist/SHA256SUMS.txt
+          cat dist/SHA256SUMS.txt
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.0-build.1
+          name: "CodexQuotaView 1.0.0 Build 1"
+          body: |
+            CodexQuotaView 1.0.0 Build 1 internal release candidate.
+
+            - macOS Universal ZIP (unsigned internal build)
+            - SHA-256 checksums
+          draft: true
+          files: |
+            dist/CodexQuotaView-1.0.0-macOS-universal.zip
+            dist/SHA256SUMS.txt

@@ -52,6 +52,53 @@ jobs:
       - name: Smoke test backend selection
         run: dotnet run --project Windows/tests/CodexQuotaView.Smoke/CodexQuotaView.Smoke.csproj -c Release
 
+  macos-universal:
+    name: macOS Universal release build
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - name: Show Xcode version
+        run: xcodebuild -version
+      - name: Build Universal app
+        run: |
+          xcodebuild \
+            -project CodexQuotaView.xcodeproj \
+            -scheme CodexQuotaView \
+            -configuration Release \
+            -destination "generic/platform=macOS" \
+            -derivedDataPath .xcode-derived/universal \
+            ARCHS="arm64 x86_64" \
+            ONLY_ACTIVE_ARCH=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            build
+      - name: Verify universal binaries
+        shell: bash
+        run: |
+          APP=".xcode-derived/universal/Build/Products/Release/CodexQuotaView.app"
+          if [ ! -d "$APP" ]; then echo "app missing"; exit 1; fi
+          for binary in \
+            "$APP/Contents/MacOS/CodexQuotaView" \
+            "$APP/Contents/PlugIns/CodexQuotaViewWidgetExtension.appex/Contents/MacOS/CodexQuotaViewWidgetExtension" \
+            "$APP/Contents/Helpers/CodexQuotaViewActivityHook" \
+            "$APP/Contents/Frameworks/CodexQuotaViewCore.framework/Versions/A/CodexQuotaViewCore"; do
+            if [ ! -f "$binary" ]; then echo "missing $binary"; exit 1; fi
+            ARCHS=$(lipo -archs "$binary")
+            echo "$binary: $ARCHS"
+            case "$ARCHS" in
+              *arm64*x86_64*|*x86_64*arm64*) ;;
+              *) echo "not universal: $binary"; exit 1;;
+            esac
+          done
+          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP/Contents/Info.plist"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$APP/Contents/Info.plist"
+      - name: Upload macOS app
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-universal-app
+          path: .xcode-derived/universal/Build/Products/Release/CodexQuotaView.app
+
   windows-app:
     name: Windows WinUI x64 app and native rendering
     runs-on: windows-2025

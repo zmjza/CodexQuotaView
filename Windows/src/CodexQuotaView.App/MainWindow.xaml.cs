@@ -1,5 +1,6 @@
 using CodexQuotaView.Core;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace CodexQuotaView.App;
 

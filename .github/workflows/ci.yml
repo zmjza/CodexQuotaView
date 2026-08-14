@@ -67,3 +67,5 @@ jobs:
         run: dotnet restore Windows/src/CodexQuotaView.App/CodexQuotaView.App.csproj -r win-x64
       - name: Build app and native rendering
         run: msbuild Windows/src/CodexQuotaView.App/CodexQuotaView.App.csproj -p:Configuration=Release -p:Platform=x64 -restore
+      - name: Rendering offscreen frame smoke
+        run: dotnet run --project Windows/tests/CodexQuotaView.Rendering.Smoke/CodexQuotaView.Rendering.Smoke.csproj -c Release

@@ -12,12 +12,13 @@ public abstract class CodexProcessBackend
 
     public async Task<QuotaSnapshot> FetchAsync(CancellationToken cancellationToken)
     {
+        var invocation = BuildInvocation();
         using var process = new Process
         {
             StartInfo = new ProcessStartInfo
             {
-                FileName = BuildInvocation().FileName,
-                Arguments = BuildInvocation().Arguments,
+                FileName = invocation.FileName,
+                Arguments = invocation.Arguments,
                 UseShellExecute = false,
                 RedirectStandardInput = true,
                 RedirectStandardOutput = true,

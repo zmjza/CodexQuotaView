@@ -284,7 +284,7 @@ NOTARY_PROFILE="<keychain-profile>" \
 ./scripts/build-app.sh
 ```
 
-使用 Xcode 时，请打开 `QuotaView.xcodeproj`，选择共享的 **QuotaView** Scheme 和 **My Mac**，然后运行或测试。
+使用 Xcode 时，请打开 `CodexQuotaView.xcodeproj`，选择共享的 **CodexQuotaView** Scheme 和 **My Mac**，然后运行或测试。
 
 ## 数据协议
 

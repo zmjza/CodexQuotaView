@@ -6,7 +6,7 @@ if [[ "$#" -ne 2 ]]; then
     print -u2 \
         "Usage: $0 <archives-directory> <release-tag>"
     print -u2 \
-        "Example: $0 /tmp/quotaview-updates v0.3.5-build.4"
+        "Example: $0 /tmp/codexquotaview-updates v1.0.0-build.1"
     exit 2
 fi
 

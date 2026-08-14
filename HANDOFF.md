@@ -2,6 +2,23 @@
 
 更新日期：2026-08-12
 
+> ## CodexQuotaView 1.0.0 二开分支（2026-08-14）
+>
+> 用户已确认在 QuotaView 开源基线（d3487bd）上二开，产品名
+> CodexQuotaView，版本 1.0.0 Build 1，唯一远端为 GitHub
+> zmjza/CodexQuotaView。本节是新产品工作区入口；下文 QuotaView 历史
+> 记录继续保留，不因二开改写。
+>
+> - 当前分支：codex/codexquotaview-1.0.0。
+> - 已完成：品牌与身份迁移（Bundle/App Group/更新源/脚本/资源/可见文案）、
+>   共享 Schema/Fixture 与三端校验、Windows x64 工程骨架（Core、Fixture
+>   Runner、Native/WSL Backend、WinUI 壳、D3D11/HLSL 冒烟）、GitHub CI
+>   双平台工作流。
+> - 外部前置：TEAMID 真实值、Xcode 工具链（本机仅 Command Line Tools，
+>   XCTest 目标需完整 Xcode）、GitHub 推送凭据（CI 实际运行）、Windows
+>   构建由 GitHub Windows Runner 验证。
+> - 里程碑与验收见 liran_docs/04-开发追踪.md、liran_docs/09-真机实测.md。
+
 工作区：`/private/tmp/quotaview-033-build5-estimated-cost`
 
 当前生产分支：`main`

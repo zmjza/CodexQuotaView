@@ -9,6 +9,13 @@
 > 生效日期：2026-08-04
 >
 > 当前生产基线：QuotaView `0.3.5 (Build 5)`
+
+> **CodexQuotaView 二开例外（2026-08-14）**：用户已确认在 QuotaView
+> 开源基线上进行二次开发，产品名 `CodexQuotaView`，版本 `1.0.0 Build 1`。
+> 新产品的规格入口为 [codexquotaview-1.0.0.md](codexquotaview-1.0.0.md)
+> （`CQV-SPEC-001`）；完整需求、任务与验收矩阵位于
+> `liran_docs/01-需求文档.md` 与 `liran_docs/04-开发追踪.md`。本页其余
+> 内容是 QuotaView 历史发布事实，不因二开而改写；新旧产品身份不得混用。
 >
 > 当前进行中工作：`QV-PRODUCT-APP-UPDATES-003` 等待后续 Build 6 或更高
 > 正式版本完成真实 N → N+1 更新验收

@@ -821,10 +821,10 @@ struct SettingsView: View {
     private var versionAndBuildLabel: String {
         let version = Bundle.main.object(
             forInfoDictionaryKey: "CFBundleShortVersionString"
-        ) as? String ?? "0.3.5"
+        ) as? String ?? "1.0.0"
         let build = Bundle.main.object(
             forInfoDictionaryKey: "CFBundleVersion"
-        ) as? String ?? "5"
+        ) as? String ?? "1"
         return copy.text(
             "版本 \(version)（\(build)）",
             "Version \(version) (\(build))"

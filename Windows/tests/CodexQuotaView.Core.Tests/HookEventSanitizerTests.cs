@@ -44,10 +44,9 @@ public sealed class HookEventSanitizerTests
         var json = """
         {
           "event": "PostToolUse",
-          "session_id": "abc",
-          "tool_name": "Bash",
           "workspace_name": "repo",
-          "occurred_at": "2026-08-14T08:00:00Z"
+          "occurred_at": "2026-08-14T08:00:00Z",
+          "extra_field": "dropped"
         }
         """;
         using var result = HookEventSanitizer.SanitizePayload(json, out var reason);
@@ -56,7 +55,6 @@ public sealed class HookEventSanitizerTests
         var root = result!.RootElement;
         Assert.True(root.TryGetProperty("event", out _));
         Assert.True(root.TryGetProperty("workspace_name", out _));
-        Assert.False(root.TryGetProperty("session_id", out _));
-        Assert.False(root.TryGetProperty("tool_name", out _));
+        Assert.False(root.TryGetProperty("extra_field", out _));
     }
 }

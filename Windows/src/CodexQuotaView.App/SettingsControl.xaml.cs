@@ -13,6 +13,10 @@ public sealed partial class SettingsControl : UserControl
     public SettingsControl()
     {
         InitializeComponent();
+        if (App.StartupPage == "settings")
+        {
+            ModeBadgeText.Text = "SETTINGS MODE ACTIVE";
+        }
         LoadSettings();
     }
 

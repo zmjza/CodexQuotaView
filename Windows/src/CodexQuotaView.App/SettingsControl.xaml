@@ -5,6 +5,9 @@
     Width="560">
     <ScrollViewer>
         <StackPanel Padding="24,20,24,24" Spacing="16">
+            <Border x:Name="ModeBadge" CornerRadius="6" Background="{ThemeResource AccentFillColorDefaultBrush}" Padding="6,3,6,3" HorizontalAlignment="Left">
+                <TextBlock x:Name="ModeBadgeText" Text="SETTINGS" FontSize="9" FontWeight="SemiBold" Foreground="White"/>
+            </Border>
             <TextBlock Text="设置" FontSize="22" FontWeight="SemiBold"/>
             <TextBlock Text="CodexQuotaView 1.0.0 (1)" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
 

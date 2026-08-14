@@ -39,8 +39,14 @@ public abstract class CodexProcessBackend
             var readTask = ReadBoundedAsync(process.StandardOutput.BaseStream, output, MaximumResponseBytes, cts.Token);
             try
             {
-                await process.StandardInput.WriteAsync("{\"method\":\"account/rateLimits/read\"}\n", cts.Token);
-                await process.StandardInput.WriteAsync("{\"method\":\"account/usage/read\"}\n", cts.Token);
+                var inputStream = process.StandardInput.BaseStream;
+                await inputStream.WriteAsync(
+                    System.Text.Encoding.UTF8.GetBytes("{\"method\":\"account/rateLimits/read\"}\n"),
+                    cts.Token);
+                await inputStream.WriteAsync(
+                    System.Text.Encoding.UTF8.GetBytes("{\"method\":\"account/usage/read\"}\n"),
+                    cts.Token);
+                await inputStream.FlushAsync(cts.Token);
             }
             catch (IOException)
             {

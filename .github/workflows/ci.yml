@@ -149,7 +149,7 @@ jobs:
         shell: pwsh
         run: |
           $env:Path += ";$env:USERPROFILE\.dotnet\tools"
-          vpk pack --packId zmjza.CodexQuotaView --packVersion 1.0.0 --packDir Windows/publish/win-x64 --output Windows/publish/releases --packTitle "CodexQuotaView" --packAuthors "zmjza" --channel stable
+          vpk pack --packId zmjza.CodexQuotaView --packVersion 1.0.0 --packDir Windows/publish/win-x64 --outputDir Windows/publish/releases --packTitle "CodexQuotaView" --packAuthors "zmjza" --channel stable
           Get-ChildItem Windows/publish/releases | Select-Object Name, Length
       - name: Verify release package structure
         shell: pwsh

@@ -29,6 +29,10 @@ public partial class App : Application
         {
             ((MainWindow)_window).OpenWidget();
         }
+        if (arguments.Contains("--open-activity"))
+        {
+            ((MainWindow)_window).OpenActivityIsland();
+        }
         if (arguments.Contains("--screenshot"))
         {
             ((MainWindow)_window).ScheduleScreenshot(3000);

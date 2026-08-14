@@ -116,6 +116,53 @@ public sealed partial class MainWindow : Window
         widget.Activate();
     }
 
+    internal void OpenActivityIsland()
+    {
+        _activityWindow ??= new ActivityIslandWindow();
+        _activityWindow.Activate();
+        _ = PlayActivityDemoAsync();
+    }
+
+    private async Task PlayActivityDemoAsync()
+    {
+        if (_activityWindow is null)
+        {
+            return;
+        }
+        var events = new[]
+        {
+            MakeEvent(CodexActivityHookEvent.SessionStart, source: CodexActivitySessionStartSource.Startup),
+            MakeEvent(CodexActivityHookEvent.UserPromptSubmit),
+            MakeEvent(CodexActivityHookEvent.PreToolUse, tool: CodexActivityToolCategory.Shell),
+            MakeEvent(CodexActivityHookEvent.PermissionRequest),
+            MakeEvent(CodexActivityHookEvent.Stop),
+        };
+        foreach (var activityEvent in events)
+        {
+            if (CodexActivityReducer.Reduce(activityEvent) is { } snapshot)
+            {
+                _activityWindow.Apply(snapshot);
+            }
+            await Task.Delay(600);
+        }
+    }
+
+    private static CodexActivityEvent MakeEvent(
+        CodexActivityHookEvent kind,
+        CodexActivitySessionStartSource? source = null,
+        CodexActivityToolCategory? tool = null)
+    {
+        return new CodexActivityEvent(
+            CodexActivityReducer.CurrentSchemaVersion,
+            kind,
+            "demo-session",
+            null,
+            "demo-workspace",
+            tool,
+            source,
+            DateTimeOffset.UtcNow);
+    }
+
     public void ScheduleScreenshot(int delayMilliseconds)
     {
         _ = CaptureAfterDelayAsync(delayMilliseconds);
@@ -134,6 +181,8 @@ public sealed partial class MainWindow : Window
         }
         var pageName = App.CapturePage == "widget"
             ? "widget"
+            : App.CapturePage == "activity"
+                ? "activity"
             : Settings.Visibility == Visibility.Visible
             ? "settings"
             : ResetPage.Visibility == Visibility.Visible
@@ -143,6 +192,11 @@ public sealed partial class MainWindow : Window
         {
             OpenWidget();
             await Task.Delay(1500);
+        }
+        if (App.CapturePage == "activity")
+        {
+            OpenActivityIsland();
+            await Task.Delay(3200);
         }
         var fileName = pageName + ".png";
         File.WriteAllText(
@@ -160,6 +214,10 @@ public sealed partial class MainWindow : Window
             var widgetWindow = _widgetHost;
             widgetWindow?.CaptureToPng(fileName);
         }
+        else if (App.CapturePage == "activity")
+        {
+            _activityWindow?.CaptureToPng(fileName);
+        }
         else
         {
             CaptureToPng(fileName);
@@ -168,6 +226,7 @@ public sealed partial class MainWindow : Window
     }
 
     private CompactWidgetHostWindow? _widgetHost;
+    private ActivityIslandWindow? _activityWindow;
 
     private void CaptureToPng(string fileName)
     {
